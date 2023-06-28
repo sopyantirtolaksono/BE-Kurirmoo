@@ -1,0 +1,1 @@
+INSERT INTO "customers" (name, ktp_number, ktp_image,is_corporate,corporate_name,account_status,request_status) VALUES ('Bayu Sarifudin', '', '', true, 'bayucorp', 'active', 'packaging');

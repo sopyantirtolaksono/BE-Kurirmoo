@@ -1,0 +1,14 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=refactory_id
+      - POSTGRES_PASSWORD=5UP3RS3CR3T
+      - POSTGRES_DB=pre_ip
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/data:/var/lib/postgresql/data

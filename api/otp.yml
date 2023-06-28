@@ -1,0 +1,84 @@
+swagger: '2.0'
+info:
+        version: '1.0.0'
+        title: OTP Whatsapp
+        description: OTP Whatsapp API
+schemes: [http]
+consumes: [application/json]
+produces: [application/json]
+securityDefinitions:
+        key:
+                type: apiKey
+                in: header
+                name: x-api-key
+
+paths:
+        /chats/send:
+                post:
+                        security:
+                                - key: []
+                        tags: [otp-service]
+                        summary: Request OTP Whatsapp by phone number
+                        description: Endpoint to get OTP whatsapp
+                        operationId: PostRequestWhatsapp
+                        parameters:
+                                - name: id
+                                  in: query
+                                  type: string
+                                  default: ''
+                                - name: data
+                                  in: body
+                                  required: true
+                                  schema:
+                                          type: object
+                                          required:
+                                                  - receiver
+                                                  - message
+                                          properties:
+                                                  receiver:
+                                                          type: string
+                                                          description: Phone number string value with prefix format '62'
+                                                          example: '6281234567890'
+                                                  message:
+                                                          type: object
+                                                          description: Object message with text
+                                                          properties:
+                                                                  text:
+                                                                          type: string
+                                                                          description: text chat
+                                                                          example: 'this is message from whatsapp'
+                        responses:
+                                200:
+                                        description: success request whatsapp otp
+                                        schema:
+                                                type: object
+                                                $ref: '#/definitions/OtpWhatsapp'
+                                400:
+                                        description: Bad Request
+                                        schema:
+                                                $ref: '#/definitions/OtpWhatsapp'
+                                404:
+                                        description: Not Found
+                                        schema:
+                                                $ref: '#/definitions/OtpWhatsapp'
+
+definitions:
+        # Model
+
+        # Responses
+        OtpWhatsapp:
+                properties:
+                        success:
+                                type: boolean
+                                x-omitempty: false
+                                example: true
+                        message:
+                                type: string
+                                x-omitempty: false
+                                example: success
+                        data:
+                                type: object
+                                x-omitempty: true
+                                example: []
+
+        # Parameters
