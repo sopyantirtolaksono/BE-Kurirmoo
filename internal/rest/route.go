@@ -21,35 +21,33 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 		if err != nil {
 			errResponse := rt.GetError(err)
 			return login.NewAuthBadRequest().WithPayload(&models.Error{
-				Code: int64(errResponse.Code()),
+				Code:    int64(errResponse.Code()),
 				Message: errResponse.Error(),
 			})
 		}
 
 		return login.NewAuthOK().WithPayload(&login.AuthOKBody{
-			Message: "Success to Login",
-			Token: token,
+			Message:   "Success to Login",
+			Token:     token,
 			ExpiredAt: expiredAt,
 		})
 	})
 
 	api.HealthHealthHandler = health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
-			HealthCheck := apiHandler.Health()
+		HealthCheck := apiHandler.Health()
 
-			return health.NewHealthOK().WithPayload(&health.HealthOKBody {
-				HealthCheck : HealthCheck,
-			})
+		return health.NewHealthOK().WithPayload(&models.Success{Message: HealthCheck})
 	})
 
 	api.CitiesGetAllCitiesHandler = cities.GetAllCitiesHandlerFunc(func(params cities.GetAllCitiesParams) middleware.Responder {
 		var cityList []*cities.GetAllCitiesOKBodyItems0
 
-		cityList, err := apiHandler.Cities(context.Background(), rt, params) 
+		cityList, err := apiHandler.Cities(context.Background(), rt, params)
 
 		if err != nil {
 			errResponse := rt.GetError(err)
 			return city_by_name.NewGetCityByNameBadRequest().WithPayload(&models.Error{
-				Code: int64(errResponse.Code()),
+				Code:    int64(errResponse.Code()),
 				Message: errResponse.Error(),
 			})
 		}
@@ -63,7 +61,7 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 		if err != nil {
 			errResponse := rt.GetError(err)
 			return city_by_name.NewGetCityByNameBadRequest().WithPayload(&models.Error{
-				Code: int64(errResponse.Code()),
+				Code:    int64(errResponse.Code()),
 				Message: errResponse.Error(),
 			})
 		}
@@ -71,7 +69,7 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 		return city_by_name.NewGetCityByNameOK().WithPayload(&city_by_name.GetCityByNameOKBody{
 			CityCode: city_code,
 			CityName: city_name,
-			Acronim: acronim,
+			Acronim:  acronim,
 		})
 	})
 }

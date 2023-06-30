@@ -46,7 +46,7 @@ func (o *PostRequestWhatsappReader) ReadResponse(response runtime.ClientResponse
 		}
 		return nil, result
 	default:
-		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
+		return nil, runtime.NewAPIError("[POST /chats/send] PostRequestWhatsapp", response, response.Code())
 	}
 }
 
@@ -334,6 +334,7 @@ func (o *PostRequestWhatsappBody) ContextValidate(ctx context.Context, formats s
 func (o *PostRequestWhatsappBody) contextValidateMessage(ctx context.Context, formats strfmt.Registry) error {
 
 	if o.Message != nil {
+
 		if err := o.Message.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("data" + "." + "message")

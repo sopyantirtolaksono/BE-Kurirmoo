@@ -29,10 +29,6 @@ paths:
           description: "Health Check"
           schema:
             $ref: "#/definitions/Success"
-            type: object
-            properties:
-              health_check:
-                type: string
         500:
           schema:
             type: string

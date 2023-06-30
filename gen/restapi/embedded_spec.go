@@ -1328,6 +1328,7 @@ func init() {
           "x-omitempty": false
         }
       }
+    },
     "ItemTypes": {
       "allOf": [
         {
