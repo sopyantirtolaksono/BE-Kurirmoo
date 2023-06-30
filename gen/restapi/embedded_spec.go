@@ -1303,7 +1303,6 @@ func init() {
         }
       }
     },
-<<<<<<< HEAD
     "GetAllCitiesOKBodyItems0": {
       "type": "object",
       "properties": {
@@ -1329,7 +1328,6 @@ func init() {
           "x-omitempty": false
         }
       }
-=======
     "ItemTypes": {
       "allOf": [
         {
@@ -1398,7 +1396,6 @@ func init() {
           }
         }
       ]
->>>>>>> 5f48244841e9d3d5fd8c9c1e5bb243355dd95ce5
     },
     "Metadata": {
       "type": "object",

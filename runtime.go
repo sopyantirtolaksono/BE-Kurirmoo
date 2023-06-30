@@ -75,7 +75,6 @@ func (r *Runtime) RunMigration() {
 	r.Db.AutoMigrate(
 		&models.Role{},
 		&models.User{},
-<<<<<<< HEAD
 		&models.Customer{},
 		&models.Driver{},
 		&models.City{},
@@ -83,10 +82,8 @@ func (r *Runtime) RunMigration() {
 		&models.Otp{},
 		&models.Route{},
 		&models.CityPassed{},
-=======
 		&models.Items{},
 		&models.ItemTypes{},
->>>>>>> 5f48244841e9d3d5fd8c9c1e5bb243355dd95ce5
 	)
 }
 

@@ -51,15 +51,12 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		LoginAuthHandler: login.AuthHandlerFunc(func(params login.AuthParams) middleware.Responder {
 			return middleware.NotImplemented("operation login.Auth has not yet been implemented")
 		}),
-<<<<<<< HEAD
 		CitiesGetAllCitiesHandler: cities.GetAllCitiesHandlerFunc(func(params cities.GetAllCitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation cities.GetAllCities has not yet been implemented")
 		}),
 		CityByNameGetCityByNameHandler: city_by_name.GetCityByNameHandlerFunc(func(params city_by_name.GetCityByNameParams) middleware.Responder {
 			return middleware.NotImplemented("operation city_by_name.GetCityByName has not yet been implemented")
 		}),
-=======
->>>>>>> 5f48244841e9d3d5fd8c9c1e5bb243355dd95ce5
 		HealthHealthHandler: health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")
 		}),
