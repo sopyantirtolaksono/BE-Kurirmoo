@@ -492,6 +492,32 @@ definitions:
             type: string
             x-go-custom-tag: gorm:"type:varchar(255);uniqueIndex"
 
+  DataMultiplier:
+    allOf:
+      - $ref: "#/definitions/ModelTrackTime"
+      - $ref: "#/definitions/ModelIdentifier"
+      - type: object
+        required:
+          - route_id
+          - truck_id
+          - max_price
+          - min_price
+        properties:
+          route_id:
+            type: number
+            format: int4
+          truck_id:
+            type: number
+            format: int4
+          max_price:
+            type: number
+            format: numeric
+            x-go-custom-tag: gorm:"not null"
+          min_price:
+            type: number
+            format: numeric
+            x-go-custom-tag: gorm:"not null"
+
   # Responses
   Error:
     type: object

@@ -355,6 +355,45 @@ func init() {
         }
       ]
     },
+    "DataMultiplier": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ModelTrackTime"
+        },
+        {
+          "$ref": "#/definitions/ModelIdentifier"
+        },
+        {
+          "type": "object",
+          "required": [
+            "route_id",
+            "truck_id",
+            "max_price",
+            "min_price"
+          ],
+          "properties": {
+            "max_price": {
+              "type": "number",
+              "format": "numeric",
+              "x-go-custom-tag": "gorm:\"not null\""
+            },
+            "min_price": {
+              "type": "number",
+              "format": "numeric",
+              "x-go-custom-tag": "gorm:\"not null\""
+            },
+            "route_id": {
+              "type": "number",
+              "format": "int4"
+            },
+            "truck_id": {
+              "type": "number",
+              "format": "int4"
+            }
+          }
+        }
+      ]
+    },
     "Driver": {
       "allOf": [
         {
@@ -1206,6 +1245,45 @@ func init() {
                 "Delivered"
               ],
               "x-go-custom-tag": "gorm:\"type:varchar(255);not null;default:'Packaging'\""
+            }
+          }
+        }
+      ]
+    },
+    "DataMultiplier": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ModelTrackTime"
+        },
+        {
+          "$ref": "#/definitions/ModelIdentifier"
+        },
+        {
+          "type": "object",
+          "required": [
+            "route_id",
+            "truck_id",
+            "max_price",
+            "min_price"
+          ],
+          "properties": {
+            "max_price": {
+              "type": "number",
+              "format": "numeric",
+              "x-go-custom-tag": "gorm:\"not null\""
+            },
+            "min_price": {
+              "type": "number",
+              "format": "numeric",
+              "x-go-custom-tag": "gorm:\"not null\""
+            },
+            "route_id": {
+              "type": "number",
+              "format": "int4"
+            },
+            "truck_id": {
+              "type": "number",
+              "format": "int4"
             }
           }
         }
