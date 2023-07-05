@@ -1,0 +1,630 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Kurirmoo
+schemes: [http]
+consumes: [application/json, multipart/form-data]
+produces: [application/json]
+securityDefinitions:
+  key:
+    type: apiKey
+    in: header
+    name: Authorization
+  hasRoleSuperAdmin:
+    type: apiKey
+    in: header
+    name: Authorization
+
+paths:
+  # health
+  /health:
+    get:
+      tags: [health]
+      summary: 'Health Check'
+      description: 'Check if the App is Running'
+      operationId: health
+      security: []
+      responses:
+        200:
+          description: 'Health Check'
+          schema:
+            $ref: '#/definitions/Success'
+        500:
+          schema:
+            type: string
+          description: Server Error
+
+  # v1
+  ## login
+  /api/v1/login:
+    post:
+      tags: [login]
+      summary: 'login'
+      description: 'Login User'
+      operationId: auth
+      security: []
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: 'Login success'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              token:
+                type: string
+              expired_at:
+                type: string
+        400:
+          $ref: '#/responses/BadRequest'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
+
+  ## cities
+  /api/v1/cities:
+    get:
+      tags:
+        - cities
+      summary: 'return a list of City'
+      description: 'Return all list of cities'
+      operationId: getAllCities
+      security: []
+      parameters:
+        - name: limit
+          in: query
+          description: filter for limit
+          required: false
+          type: integer
+          default: 10
+          maximum: 100
+        - name: city_name
+          in: query
+          required: false
+          description: filter with name
+          type: string
+
+      responses:
+        200:
+          description: A JSON array of city's name
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                city_name:
+                  type: string
+                city_code:
+                  type: string
+                id:
+                  type: integer
+                created_at:
+                  type: integer
+                  format: date-time
+                  x-omitempty: false
+                  x-go-custom-tag: gorm:"type:int;autoCreateTime"
+                updated_at:
+                  type: integer
+                  format: date-time
+                  x-omitempty: false
+                  x-go-custom-tag: gorm:"type:int;autoUpdateTime"
+
+        400:
+          $ref: '#/responses/BadRequest'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
+
+    ## add city
+  /api/v1/city:
+    post:
+      tags: [addCity]
+      summary: 'Add a City'
+      description: 'Add a City with Acronim'
+      operationId: addCity
+      security: []
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - code
+            properties:
+              name:
+                type: string
+              code:
+                type: string
+      responses:
+        200:
+          description: 'Add city success'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        400:
+          $ref: '#/responses/BadRequest'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
+
+  ## cities by name
+  /api/v1/cities/{city_name}:
+    get:
+      summary: get a city by name
+      tags: [cityByName]
+      description: 'Return city by name'
+      operationId: getCityByName
+      security: []
+      parameters:
+        - name: city_name
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A JSON array of city's name
+          schema:
+            type: object
+            properties:
+              city_name:
+                type: string
+              city_code:
+                type: string
+              acronim:
+                type: string
+
+        400:
+          $ref: '#/responses/BadRequest'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  # Model
+  principal:
+    type: object
+    properties:
+      name:
+        type: string
+      roles:
+        type: array
+        items:
+          type: string
+
+  ModelTrackTime:
+    type: object
+    properties:
+      created_at:
+        type: integer
+        format: date-time
+        x-omitempty: false
+        x-go-custom-tag: gorm:"type:int;autoCreateTime"
+      updated_at:
+        type: integer
+        format: date-time
+        x-omitempty: false
+        x-go-custom-tag: gorm:"type:int;autoUpdateTime"
+
+  ModelIdentifier:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: uint64
+        x-go-custom-tag: gorm:"type:int auto_increment;primaryKey"
+
+  Role:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - name
+        properties:
+          slug:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);uniqueIndex"
+          name:
+            type: string
+
+  User:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - role_id
+          - email
+          - phone_number
+        properties:
+          role_id:
+            type: number
+            format: uint64
+          role:
+            $ref: '#/definitions/Role'
+          phone_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(40);unique;not null"
+          email:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);unique;not null"
+          password:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          type:
+            type: string
+            enum: [customer, driver, company]
+            x-go-custom-tag: gorm:"type:varchar(255);not null;default:''"
+
+  Customer:
+    allOf:
+      - $ref: '#/definitions/User'
+      - type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(100);not null"
+          ktp_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);not null"
+          ktp_image:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          is_corporate:
+            type: boolean
+            x-go-custom-tag: gorm:"type:boolean;not null"
+          corporate_name:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(100);not null"
+          nib:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);null"
+          npwp_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);null"
+          npwp_image:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);null"
+          account_status:
+            type: string
+            enum: [active, not-active]
+            x-go-custom-tag: gorm:"type:varchar(255);not null;default:'active'"
+          request_status:
+            type: string
+            enum: [Packaging, Shipped, Delivered]
+            x-go-custom-tag: gorm:"type:varchar(255);not null;default:'Packaging'"
+
+  Driver:
+    allOf:
+      - $ref: '#/definitions/User'
+      - type: object
+        required:
+          - name
+          - ktp_image
+          - ktp_number
+          - vehicle_plate
+          - sim_number
+          - sim_image
+        properties:
+          name:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(100);not null"
+          ktp_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);not null"
+          ktp_image:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          color_truck:
+            type: string
+          vehicle_plate:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(10);not null"
+          truck_Image_1:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          truck_Image_2:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          truck_Image_3:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          company_id:
+            type: number
+            format: uint64
+            x-go-custom-tag: gorm:"type:varchar;nullable"
+          trip_status:
+            type: string
+            enum: [online, offline]
+            x-go-custom-tag: gorm:"type:varchar(255);not null;default:'online'"
+          sim_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);not null"
+          sim_image:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          stnk_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(16);not null"
+          stnk_image:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+
+  City:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - name
+          - code
+        properties:
+          city_name:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(50);not null"
+          city_code:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(5)"
+
+  TruckList:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - truck_kind
+          - truck_type
+          - capacity
+        properties:
+          truck_kind:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(50);not null"
+          brand:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(50);not null"
+          truck_type:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(50);not null"
+          length:
+            type: integer
+            x-go-custom-tag: gorm:"type:integer;not null"
+          width:
+            type: integer
+            x-go-custom-tag: gorm:"type:integer;not null"
+          height:
+            type: integer
+            x-go-custom-tag: gorm:"type:integer;not null"
+          capacity:
+            type: integer
+            x-go-custom-tag: gorm:"type:integer;not null"
+
+  Route:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - origin_city
+          - destination_city
+        properties:
+          lane:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(10);not null"
+          distance:
+            type: integer
+            x-go-custom-tag: gorm:"type:integer;not null"
+          origin_city:
+            allOf:
+              - $ref: '#/definitions/City'
+            x-go-custom-tag: gorm:"foreigKey:name;type:string;not null"
+
+          destination_city:
+            allOf:
+              - $ref: '#/definitions/City'
+            x-go-custom-tag: gorm:"foreigKey:name;type:string;not null"
+
+  CityPassed:
+    type: object
+    required:
+      - route_id
+      - city
+    properties:
+      route_id:
+        allOf:
+          - $ref: '#/definitions/Route'
+        x-go-custom-tag: gorm:"foreigKey:id;type:string;not null"
+      city:
+        allOf:
+          - $ref: '#/definitions/City'
+        x-go-custom-tag: gorm:"foreigKey:id;type:string;not null"
+
+  Otp:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - phone_number
+        properties:
+          phone_number:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(40);not null"
+          otp:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(5);not null"
+          is_used:
+            type: boolean
+          otp_type:
+            type: string
+            enum: [whatsapp]
+            x-go-custom-tag: gorm:"type:varchar(255);not null;default:'whatsapp'"
+  Items:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
+      - type: object
+        required:
+          - item_category
+          - item_name
+          - max_cubic_estimation
+          - max_item_weight
+          - min_cubic_estiamtion
+          - min_item_weight
+        properties:
+          item_category:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(100);not null"
+          item_name:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);not null"
+          max_cubic_estimation:
+            type: number
+            format: double
+          max_item_weight:
+            type: number
+            format: double
+          min_cubic_estiamtion:
+            type: number
+            format: double
+          min_item_weight:
+            type: number
+            format: double
+
+  ItemTypes:
+    allOf:
+      - $ref: '#/definitions/ModelTrackTime'
+      - type: object
+        required:
+          - slug
+        properties:
+          name:
+            type: string
+          slug:
+            type: string
+            x-go-custom-tag: gorm:"type:varchar(255);uniqueIndex"
+
+  # Responses
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+        example: 'error'
+
+  Success:
+    type: object
+    properties:
+      message:
+        type: string
+
+  Metadata:
+    type: object
+    properties:
+      page:
+        type: integer
+        example: 1
+      per_page:
+        type: integer
+        example: 50
+      total_row:
+        type: integer
+        example: 200
+      total_page:
+        type: integer
+        example: 4
+
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+
+  Unauthorized:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/Error'
+
+  UnsupportedMediaType:
+    description: Unsupported Media Type
+    schema:
+      $ref: '#/definitions/Error'
+
+  StatusUnprocessableEntity:
+    description: Unprocessable Entity
+    schema:
+      $ref: '#/definitions/Error'
+
+  InternalServerError:
+    description: Internal server error
+    schema:
+      $ref: '#/definitions/Error'
+
+  MethodNotAllowed:
+    description: MethodNotAllowed
+    schema:
+      $ref: '#/definitions/Error'
+
+  ServiceUnvailable:
+    description: ServiceUnvailable
+    schema:
+      $ref: '#/definitions/Error'
+
+parameters:
+  page_pagination:
+    description: default parameter for pagination page
+    name: page
+    in: query
+    type: integer
+    default: 1
+  limit_pagination:
+    description: default parameter for limit pagination
+    name: limit
+    in: query
+    type: integer
+    default: 10
+  order_pagination:
+    description: default parameter for order pagination
+    name: order
+    in: query
+    type: string
+    default: 'created_at'
+  sort_pagination:
+    description: default parameter for sort pagination
+    name: sort
+    in: query
+    type: string
+    enum: [ASC, DESC]
+    default: 'DESC'

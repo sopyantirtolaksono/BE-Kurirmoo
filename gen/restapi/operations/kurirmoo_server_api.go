@@ -19,6 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"kurirmoo/gen/restapi/operations/add_city"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/health"
@@ -48,6 +49,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		AddCityAddCityHandler: add_city.AddCityHandlerFunc(func(params add_city.AddCityParams) middleware.Responder {
+			return middleware.NotImplemented("operation add_city.AddCity has not yet been implemented")
+		}),
 		LoginAuthHandler: login.AuthHandlerFunc(func(params login.AuthParams) middleware.Responder {
 			return middleware.NotImplemented("operation login.Auth has not yet been implemented")
 		}),
@@ -99,6 +103,8 @@ type KurirmooServerAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// AddCityAddCityHandler sets the operation handler for the add city operation
+	AddCityAddCityHandler add_city.AddCityHandler
 	// LoginAuthHandler sets the operation handler for the auth operation
 	LoginAuthHandler login.AuthHandler
 	// CitiesGetAllCitiesHandler sets the operation handler for the get all cities operation
@@ -187,6 +193,9 @@ func (o *KurirmooServerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.AddCityAddCityHandler == nil {
+		unregistered = append(unregistered, "add_city.AddCityHandler")
+	}
 	if o.LoginAuthHandler == nil {
 		unregistered = append(unregistered, "login.AuthHandler")
 	}
@@ -289,6 +298,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1/city"] = add_city.NewAddCity(o.context, o.AddCityAddCityHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

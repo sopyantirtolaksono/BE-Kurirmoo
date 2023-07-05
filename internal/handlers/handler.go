@@ -13,6 +13,7 @@ type (
 		CitiesHandler
 		CityByNameHandler
 		HealthHandler
+		AddCityHandler
 	}
 
 	LoginHandler interface {
@@ -21,6 +22,10 @@ type (
 
 	CitiesHandler interface {
 		Cities(ctx context.Context, rt *kurirmoo.Runtime, params cities.GetAllCitiesParams) (cityList []*cities.GetAllCitiesOKBodyItems0, err error)
+	}
+
+	AddCityHandler interface {
+		AddCity(ctx context.Context, rt *kurirmoo.Runtime, name, code string) (err error)
 	}
 
 	CityByNameHandler interface {

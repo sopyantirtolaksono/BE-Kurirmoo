@@ -10,6 +10,7 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
+	"kurirmoo/pkg/client/add_city"
 	"kurirmoo/pkg/client/cities"
 	"kurirmoo/pkg/client/city_by_name"
 	"kurirmoo/pkg/client/health"
@@ -58,6 +59,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Kurirmoo {
 
 	cli := new(Kurirmoo)
 	cli.Transport = transport
+	cli.AddCity = add_city.New(transport, formats)
 	cli.Cities = cities.New(transport, formats)
 	cli.CityByName = city_by_name.New(transport, formats)
 	cli.Health = health.New(transport, formats)
@@ -106,6 +108,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // Kurirmoo is a client for kurirmoo
 type Kurirmoo struct {
+	AddCity add_city.ClientService
+
 	Cities cities.ClientService
 
 	CityByName city_by_name.ClientService
@@ -120,6 +124,7 @@ type Kurirmoo struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *Kurirmoo) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
+	c.AddCity.SetTransport(transport)
 	c.Cities.SetTransport(transport)
 	c.CityByName.SetTransport(transport)
 	c.Health.SetTransport(transport)
