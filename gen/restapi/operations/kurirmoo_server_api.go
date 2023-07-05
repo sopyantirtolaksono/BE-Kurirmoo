@@ -301,7 +301,7 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/api/v1/city"] = add_city.NewAddCity(o.context, o.AddCityAddCityHandler)
+	o.handlers["POST"]["/api/v1/cities"] = add_city.NewAddCity(o.context, o.AddCityAddCityHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

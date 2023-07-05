@@ -102,56 +102,7 @@ func init() {
             }
           }
         }
-      }
-    },
-    "/api/v1/cities/{city_name}": {
-      "get": {
-        "security": [],
-        "description": "Return city by name",
-        "tags": [
-          "cityByName"
-        ],
-        "summary": "get a city by name",
-        "operationId": "getCityByName",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "city_name",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A JSON array of city's name",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "acronim": {
-                  "type": "string"
-                },
-                "city_code": {
-                  "type": "string"
-                },
-                "city_name": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/responses/BadRequest"
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/city": {
+      },
       "post": {
         "security": [],
         "description": "Add a City with Acronim",
@@ -189,6 +140,53 @@ func init() {
               "type": "object",
               "properties": {
                 "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cities/{city_name}": {
+      "get": {
+        "security": [],
+        "description": "Return city by name",
+        "tags": [
+          "cityByName"
+        ],
+        "summary": "get a city by name",
+        "operationId": "getCityByName",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "city_name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of city's name",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "acronim": {
+                  "type": "string"
+                },
+                "city_code": {
+                  "type": "string"
+                },
+                "city_name": {
                   "type": "string"
                 }
               }
@@ -1007,59 +1005,7 @@ func init() {
             }
           }
         }
-      }
-    },
-    "/api/v1/cities/{city_name}": {
-      "get": {
-        "security": [],
-        "description": "Return city by name",
-        "tags": [
-          "cityByName"
-        ],
-        "summary": "get a city by name",
-        "operationId": "getCityByName",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "city_name",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A JSON array of city's name",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "acronim": {
-                  "type": "string"
-                },
-                "city_code": {
-                  "type": "string"
-                },
-                "city_name": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/city": {
+      },
       "post": {
         "security": [],
         "description": "Add a City with Acronim",
@@ -1097,6 +1043,56 @@ func init() {
               "type": "object",
               "properties": {
                 "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cities/{city_name}": {
+      "get": {
+        "security": [],
+        "description": "Return city by name",
+        "tags": [
+          "cityByName"
+        ],
+        "summary": "get a city by name",
+        "operationId": "getCityByName",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "city_name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of city's name",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "acronim": {
+                  "type": "string"
+                },
+                "city_code": {
+                  "type": "string"
+                },
+                "city_name": {
                   "type": "string"
                 }
               }

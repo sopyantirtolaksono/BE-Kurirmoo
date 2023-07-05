@@ -96,11 +96,11 @@ func (o *AddCityOK) Code() int {
 }
 
 func (o *AddCityOK) Error() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCityOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityOK  %+v", 200, o.Payload)
 }
 
 func (o *AddCityOK) String() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCityOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityOK  %+v", 200, o.Payload)
 }
 
 func (o *AddCityOK) GetPayload() *AddCityOKBody {
@@ -164,11 +164,11 @@ func (o *AddCityBadRequest) Code() int {
 }
 
 func (o *AddCityBadRequest) Error() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCityBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *AddCityBadRequest) String() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCityBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *AddCityBadRequest) GetPayload() *models.Error {
@@ -236,11 +236,11 @@ func (o *AddCityDefault) Code() int {
 }
 
 func (o *AddCityDefault) Error() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCity default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCity default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *AddCityDefault) String() string {
-	return fmt.Sprintf("[POST /api/v1/city][%d] addCity default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCity default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *AddCityDefault) GetPayload() *models.Error {

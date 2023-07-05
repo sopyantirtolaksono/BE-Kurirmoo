@@ -35,7 +35,7 @@ func NewAddCity(ctx *middleware.Context, handler AddCityHandler) *AddCity {
 }
 
 /*
-	AddCity swagger:route POST /api/v1/city addCity addCity
+	AddCity swagger:route POST /api/v1/cities addCity addCity
 
 # Add a City
 

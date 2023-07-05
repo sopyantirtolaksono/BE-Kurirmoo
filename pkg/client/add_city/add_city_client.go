@@ -46,7 +46,7 @@ func (a *Client) AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityO
 	op := &runtime.ClientOperation{
 		ID:                 "addCity",
 		Method:             "POST",
-		PathPattern:        "/api/v1/city",
+		PathPattern:        "/api/v1/cities",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json", "multipart/form-data"},
 		Schemes:            []string{"http"},

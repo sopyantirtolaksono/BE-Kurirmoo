@@ -130,9 +130,6 @@ paths:
           description: error
           schema:
             $ref: '#/definitions/Error'
-
-    ## add city
-  /api/v1/city:
     post:
       tags: [addCity]
       summary: 'Add a City'
