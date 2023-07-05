@@ -22,7 +22,7 @@ func (h *handler) AddCity(ctx context.Context, rt *kurirmoo.Runtime, name, code 
 	result := rt.Db.Exec("INSERT INTO cities (city_name, city_code) VALUES (?, ?)", name, code)
 
 	if result.Error != nil {
-		err = rt.SetError(http.StatusNotFound, "Adding data failed.")
+		err = rt.SetError(http.StatusNotFound, "Something went wrong. Adding data failed.")
 		return err
 	}
 
