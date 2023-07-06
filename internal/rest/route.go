@@ -9,6 +9,7 @@ import (
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
+	"kurirmoo/gen/restapi/operations/trucks"
 
 	"kurirmoo/internal/handlers"
 
@@ -70,6 +71,22 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			CityCode: city_code,
 			CityName: city_name,
 			Acronim:  acronim,
+		})
+	})
+
+	api.TrucksAddTruckHandler = trucks.AddTruckHandlerFunc(func(params trucks.AddTruckParams) middleware.Responder {
+		message, err := apiHandler.AddTruck(context.Background(), rt, *params.Data.TruckKind, *params.Data.Brand, *params.Data.TruckType, *params.Data.Length, *params.Data.Width, *params.Data.Height, *params.Data.Capacity)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			return trucks.NewAddTruckBadRequest().WithPayload(&models.Error{
+				Code:    int64(errResponse.Code()),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return trucks.NewAddTruckCreated().WithPayload(&models.Success{
+			Message: message,
 		})
 	})
 }

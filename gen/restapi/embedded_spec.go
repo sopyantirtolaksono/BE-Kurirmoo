@@ -212,6 +212,76 @@ func init() {
         }
       }
     },
+    "/api/v1/trucks": {
+      "post": {
+        "security": [],
+        "description": "Add new truck",
+        "tags": [
+          "trucks"
+        ],
+        "summary": "add truck",
+        "operationId": "addTruck",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "truck_kind",
+                "brand",
+                "truck_type",
+                "length",
+                "width",
+                "height",
+                "capacity"
+              ],
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "length": {
+                  "type": "integer"
+                },
+                "truck_kind": {
+                  "type": "string"
+                },
+                "truck_type": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success added",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "security": [],
@@ -730,7 +800,11 @@ func init() {
           "type": "object",
           "required": [
             "truck_kind",
+            "brand",
             "truck_type",
+            "length",
+            "width",
+            "height",
             "capacity"
           ],
           "properties": {
@@ -1090,6 +1164,79 @@ func init() {
                   "type": "string"
                 }
               }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trucks": {
+      "post": {
+        "security": [],
+        "description": "Add new truck",
+        "tags": [
+          "trucks"
+        ],
+        "summary": "add truck",
+        "operationId": "addTruck",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "truck_kind",
+                "brand",
+                "truck_type",
+                "length",
+                "width",
+                "height",
+                "capacity"
+              ],
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "length": {
+                  "type": "integer"
+                },
+                "truck_kind": {
+                  "type": "string"
+                },
+                "truck_type": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success added",
+            "schema": {
+              "$ref": "#/definitions/Success"
             }
           },
           "400": {
@@ -1651,7 +1798,11 @@ func init() {
           "type": "object",
           "required": [
             "truck_kind",
+            "brand",
             "truck_type",
+            "length",
+            "width",
+            "height",
             "capacity"
           ],
           "properties": {

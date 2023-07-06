@@ -23,6 +23,7 @@ import (
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
+	"kurirmoo/gen/restapi/operations/trucks"
 )
 
 // NewKurirmooServerAPI creates a new KurirmooServer instance
@@ -48,6 +49,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		TrucksAddTruckHandler: trucks.AddTruckHandlerFunc(func(params trucks.AddTruckParams) middleware.Responder {
+			return middleware.NotImplemented("operation trucks.AddTruck has not yet been implemented")
+		}),
 		LoginAuthHandler: login.AuthHandlerFunc(func(params login.AuthParams) middleware.Responder {
 			return middleware.NotImplemented("operation login.Auth has not yet been implemented")
 		}),
@@ -99,6 +103,8 @@ type KurirmooServerAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// TrucksAddTruckHandler sets the operation handler for the add truck operation
+	TrucksAddTruckHandler trucks.AddTruckHandler
 	// LoginAuthHandler sets the operation handler for the auth operation
 	LoginAuthHandler login.AuthHandler
 	// CitiesGetAllCitiesHandler sets the operation handler for the get all cities operation
@@ -187,6 +193,9 @@ func (o *KurirmooServerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.TrucksAddTruckHandler == nil {
+		unregistered = append(unregistered, "trucks.AddTruckHandler")
+	}
 	if o.LoginAuthHandler == nil {
 		unregistered = append(unregistered, "login.AuthHandler")
 	}
@@ -289,6 +298,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1/trucks"] = trucks.NewAddTruck(o.context, o.TrucksAddTruckHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

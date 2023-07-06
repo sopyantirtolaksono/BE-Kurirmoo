@@ -13,6 +13,7 @@ type (
 		CitiesHandler
 		CityByNameHandler
 		HealthHandler
+		AddTruckHandler
 	}
 
 	LoginHandler interface {
@@ -29,6 +30,10 @@ type (
 
 	HealthHandler interface {
 		Health() string
+	}
+
+	AddTruckHandler interface {
+		AddTruck(ctx context.Context, rt *kurirmoo.Runtime, truck_kind string, brand string, truck_type string, length int64, width int64, height int64, capacity int64) (message string, err error)
 	}
 )
 

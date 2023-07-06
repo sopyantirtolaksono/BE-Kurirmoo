@@ -23,17 +23,20 @@ type TruckList struct {
 	ModelIdentifier
 
 	// brand
-	Brand string `json:"brand,omitempty" gorm:"type:varchar(50);not null"`
+	// Required: true
+	Brand *string `json:"brand" gorm:"type:varchar(50);not null"`
 
 	// capacity
 	// Required: true
 	Capacity *int64 `json:"capacity" gorm:"type:integer;not null"`
 
 	// height
-	Height int64 `json:"height,omitempty" gorm:"type:integer;not null"`
+	// Required: true
+	Height *int64 `json:"height" gorm:"type:integer;not null"`
 
 	// length
-	Length int64 `json:"length,omitempty" gorm:"type:integer;not null"`
+	// Required: true
+	Length *int64 `json:"length" gorm:"type:integer;not null"`
 
 	// truck kind
 	// Required: true
@@ -44,7 +47,8 @@ type TruckList struct {
 	TruckType *string `json:"truck_type" gorm:"type:varchar(50);not null"`
 
 	// width
-	Width int64 `json:"width,omitempty" gorm:"type:integer;not null"`
+	// Required: true
+	Width *int64 `json:"width" gorm:"type:integer;not null"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -65,19 +69,19 @@ func (m *TruckList) UnmarshalJSON(raw []byte) error {
 
 	// AO2
 	var dataAO2 struct {
-		Brand string `json:"brand,omitempty"`
+		Brand *string `json:"brand"`
 
 		Capacity *int64 `json:"capacity"`
 
-		Height int64 `json:"height,omitempty"`
+		Height *int64 `json:"height"`
 
-		Length int64 `json:"length,omitempty"`
+		Length *int64 `json:"length"`
 
 		TruckKind *string `json:"truck_kind"`
 
 		TruckType *string `json:"truck_type"`
 
-		Width int64 `json:"width,omitempty"`
+		Width *int64 `json:"width"`
 	}
 	if err := swag.ReadJSON(raw, &dataAO2); err != nil {
 		return err
@@ -116,19 +120,19 @@ func (m TruckList) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO1)
 	var dataAO2 struct {
-		Brand string `json:"brand,omitempty"`
+		Brand *string `json:"brand"`
 
 		Capacity *int64 `json:"capacity"`
 
-		Height int64 `json:"height,omitempty"`
+		Height *int64 `json:"height"`
 
-		Length int64 `json:"length,omitempty"`
+		Length *int64 `json:"length"`
 
 		TruckKind *string `json:"truck_kind"`
 
 		TruckType *string `json:"truck_type"`
 
-		Width int64 `json:"width,omitempty"`
+		Width *int64 `json:"width"`
 	}
 
 	dataAO2.Brand = m.Brand
@@ -166,7 +170,19 @@ func (m *TruckList) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateBrand(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateCapacity(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateHeight(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLength(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -178,15 +194,46 @@ func (m *TruckList) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateWidth(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
 }
 
+func (m *TruckList) validateBrand(formats strfmt.Registry) error {
+
+	if err := validate.Required("brand", "body", m.Brand); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *TruckList) validateCapacity(formats strfmt.Registry) error {
 
 	if err := validate.Required("capacity", "body", m.Capacity); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *TruckList) validateHeight(formats strfmt.Registry) error {
+
+	if err := validate.Required("height", "body", m.Height); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *TruckList) validateLength(formats strfmt.Registry) error {
+
+	if err := validate.Required("length", "body", m.Length); err != nil {
 		return err
 	}
 
@@ -205,6 +252,15 @@ func (m *TruckList) validateTruckKind(formats strfmt.Registry) error {
 func (m *TruckList) validateTruckType(formats strfmt.Registry) error {
 
 	if err := validate.Required("truck_type", "body", m.TruckType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *TruckList) validateWidth(formats strfmt.Registry) error {
+
+	if err := validate.Required("width", "body", m.Width); err != nil {
 		return err
 	}
 

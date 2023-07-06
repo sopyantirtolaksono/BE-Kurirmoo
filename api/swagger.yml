@@ -164,6 +164,55 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ## trucks
+  /api/v1/trucks:
+    post:
+      tags: [trucks]
+      summary: "add truck"
+      description: "Add new truck"
+      operationId: addTruck
+      security: []
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - truck_kind
+              - brand
+              - truck_type
+              - length
+              - width
+              - height
+              - capacity
+            properties:
+              truck_kind:
+                type: string
+              brand:
+                type: string
+              truck_type:
+                type: string
+              length:
+                type: integer
+              width:
+                type: integer
+              height:
+                type: integer
+              capacity:
+                type: integer
+      responses:
+        201:
+          description: "Success added"
+          schema:
+            $ref: "#/definitions/Success"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+
 definitions:
   # Model
   principal:
@@ -362,7 +411,11 @@ definitions:
       - type: object
         required:
           - truck_kind
+          - brand
           - truck_type
+          - length
+          - width
+          - height
           - capacity
         properties:
           truck_kind:

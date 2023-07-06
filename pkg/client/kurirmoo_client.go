@@ -14,6 +14,7 @@ import (
 	"kurirmoo/pkg/client/city_by_name"
 	"kurirmoo/pkg/client/health"
 	"kurirmoo/pkg/client/login"
+	"kurirmoo/pkg/client/trucks"
 )
 
 // Default kurirmoo HTTP client.
@@ -62,6 +63,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Kurirmoo {
 	cli.CityByName = city_by_name.New(transport, formats)
 	cli.Health = health.New(transport, formats)
 	cli.Login = login.New(transport, formats)
+	cli.Trucks = trucks.New(transport, formats)
 	return cli
 }
 
@@ -114,6 +116,8 @@ type Kurirmoo struct {
 
 	Login login.ClientService
 
+	Trucks trucks.ClientService
+
 	Transport runtime.ClientTransport
 }
 
@@ -124,4 +128,5 @@ func (c *Kurirmoo) SetTransport(transport runtime.ClientTransport) {
 	c.CityByName.SetTransport(transport)
 	c.Health.SetTransport(transport)
 	c.Login.SetTransport(transport)
+	c.Trucks.SetTransport(transport)
 }
