@@ -45,7 +45,7 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			})
 		}
 
-		return add_city.NewAddCityOK().WithPayload(&add_city.AddCityOKBody{
+		return add_city.NewAddCityCreated().WithPayload(&add_city.AddCityCreatedBody{
 			Message: "Success to add city",
 		})
 })

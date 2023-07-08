@@ -27,8 +27,8 @@ type AddCityReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *AddCityReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-	case 200:
-		result := NewAddCityOK()
+	case 201:
+		result := NewAddCityCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -51,65 +51,65 @@ func (o *AddCityReader) ReadResponse(response runtime.ClientResponse, consumer r
 	}
 }
 
-// NewAddCityOK creates a AddCityOK with default headers values
-func NewAddCityOK() *AddCityOK {
-	return &AddCityOK{}
+// NewAddCityCreated creates a AddCityCreated with default headers values
+func NewAddCityCreated() *AddCityCreated {
+	return &AddCityCreated{}
 }
 
 /*
-AddCityOK describes a response with status code 200, with default header values.
+AddCityCreated describes a response with status code 201, with default header values.
 
 Add city success
 */
-type AddCityOK struct {
-	Payload *AddCityOKBody
+type AddCityCreated struct {
+	Payload *AddCityCreatedBody
 }
 
-// IsSuccess returns true when this add city o k response has a 2xx status code
-func (o *AddCityOK) IsSuccess() bool {
+// IsSuccess returns true when this add city created response has a 2xx status code
+func (o *AddCityCreated) IsSuccess() bool {
 	return true
 }
 
-// IsRedirect returns true when this add city o k response has a 3xx status code
-func (o *AddCityOK) IsRedirect() bool {
+// IsRedirect returns true when this add city created response has a 3xx status code
+func (o *AddCityCreated) IsRedirect() bool {
 	return false
 }
 
-// IsClientError returns true when this add city o k response has a 4xx status code
-func (o *AddCityOK) IsClientError() bool {
+// IsClientError returns true when this add city created response has a 4xx status code
+func (o *AddCityCreated) IsClientError() bool {
 	return false
 }
 
-// IsServerError returns true when this add city o k response has a 5xx status code
-func (o *AddCityOK) IsServerError() bool {
+// IsServerError returns true when this add city created response has a 5xx status code
+func (o *AddCityCreated) IsServerError() bool {
 	return false
 }
 
-// IsCode returns true when this add city o k response a status code equal to that given
-func (o *AddCityOK) IsCode(code int) bool {
-	return code == 200
+// IsCode returns true when this add city created response a status code equal to that given
+func (o *AddCityCreated) IsCode(code int) bool {
+	return code == 201
 }
 
-// Code gets the status code for the add city o k response
-func (o *AddCityOK) Code() int {
-	return 200
+// Code gets the status code for the add city created response
+func (o *AddCityCreated) Code() int {
+	return 201
 }
 
-func (o *AddCityOK) Error() string {
-	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityOK  %+v", 200, o.Payload)
+func (o *AddCityCreated) Error() string {
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityCreated  %+v", 201, o.Payload)
 }
 
-func (o *AddCityOK) String() string {
-	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityOK  %+v", 200, o.Payload)
+func (o *AddCityCreated) String() string {
+	return fmt.Sprintf("[POST /api/v1/cities][%d] addCityCreated  %+v", 201, o.Payload)
 }
 
-func (o *AddCityOK) GetPayload() *AddCityOKBody {
+func (o *AddCityCreated) GetPayload() *AddCityCreatedBody {
 	return o.Payload
 }
 
-func (o *AddCityOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *AddCityCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(AddCityOKBody)
+	o.Payload = new(AddCityCreatedBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -334,27 +334,27 @@ func (o *AddCityBody) UnmarshalBinary(b []byte) error {
 }
 
 /*
-AddCityOKBody add city o k body
-swagger:model AddCityOKBody
+AddCityCreatedBody add city created body
+swagger:model AddCityCreatedBody
 */
-type AddCityOKBody struct {
+type AddCityCreatedBody struct {
 
 	// message
 	Message string `json:"message,omitempty"`
 }
 
-// Validate validates this add city o k body
-func (o *AddCityOKBody) Validate(formats strfmt.Registry) error {
+// Validate validates this add city created body
+func (o *AddCityCreatedBody) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this add city o k body based on context it is used
-func (o *AddCityOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this add city created body based on context it is used
+func (o *AddCityCreatedBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (o *AddCityOKBody) MarshalBinary() ([]byte, error) {
+func (o *AddCityCreatedBody) MarshalBinary() ([]byte, error) {
 	if o == nil {
 		return nil, nil
 	}
@@ -362,8 +362,8 @@ func (o *AddCityOKBody) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (o *AddCityOKBody) UnmarshalBinary(b []byte) error {
-	var res AddCityOKBody
+func (o *AddCityCreatedBody) UnmarshalBinary(b []byte) error {
+	var res AddCityCreatedBody
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

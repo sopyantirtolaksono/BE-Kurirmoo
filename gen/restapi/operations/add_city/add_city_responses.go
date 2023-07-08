@@ -13,43 +13,43 @@ import (
 	"kurirmoo/gen/models"
 )
 
-// AddCityOKCode is the HTTP code returned for type AddCityOK
-const AddCityOKCode int = 200
+// AddCityCreatedCode is the HTTP code returned for type AddCityCreated
+const AddCityCreatedCode int = 201
 
 /*
-AddCityOK Add city success
+AddCityCreated Add city success
 
-swagger:response addCityOK
+swagger:response addCityCreated
 */
-type AddCityOK struct {
+type AddCityCreated struct {
 
 	/*
 	  In: Body
 	*/
-	Payload *AddCityOKBody `json:"body,omitempty"`
+	Payload *AddCityCreatedBody `json:"body,omitempty"`
 }
 
-// NewAddCityOK creates AddCityOK with default headers values
-func NewAddCityOK() *AddCityOK {
+// NewAddCityCreated creates AddCityCreated with default headers values
+func NewAddCityCreated() *AddCityCreated {
 
-	return &AddCityOK{}
+	return &AddCityCreated{}
 }
 
-// WithPayload adds the payload to the add city o k response
-func (o *AddCityOK) WithPayload(payload *AddCityOKBody) *AddCityOK {
+// WithPayload adds the payload to the add city created response
+func (o *AddCityCreated) WithPayload(payload *AddCityCreatedBody) *AddCityCreated {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the add city o k response
-func (o *AddCityOK) SetPayload(payload *AddCityOKBody) {
+// SetPayload sets the payload to the add city created response
+func (o *AddCityCreated) SetPayload(payload *AddCityCreatedBody) {
 	o.Payload = payload
 }
 
 // WriteResponse to the client
-func (o *AddCityOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *AddCityCreated) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(200)
+	rw.WriteHeader(201)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {

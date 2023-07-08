@@ -135,27 +135,27 @@ func (o *AddCityBody) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
-// AddCityOKBody add city o k body
+// AddCityCreatedBody add city created body
 //
-// swagger:model AddCityOKBody
-type AddCityOKBody struct {
+// swagger:model AddCityCreatedBody
+type AddCityCreatedBody struct {
 
 	// message
 	Message string `json:"message,omitempty"`
 }
 
-// Validate validates this add city o k body
-func (o *AddCityOKBody) Validate(formats strfmt.Registry) error {
+// Validate validates this add city created body
+func (o *AddCityCreatedBody) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this add city o k body based on context it is used
-func (o *AddCityOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this add city created body based on context it is used
+func (o *AddCityCreatedBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (o *AddCityOKBody) MarshalBinary() ([]byte, error) {
+func (o *AddCityCreatedBody) MarshalBinary() ([]byte, error) {
 	if o == nil {
 		return nil, nil
 	}
@@ -163,8 +163,8 @@ func (o *AddCityOKBody) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (o *AddCityOKBody) UnmarshalBinary(b []byte) error {
-	var res AddCityOKBody
+func (o *AddCityCreatedBody) UnmarshalBinary(b []byte) error {
+	var res AddCityCreatedBody
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

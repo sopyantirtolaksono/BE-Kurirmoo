@@ -28,7 +28,7 @@ type ClientOption func(*runtime.ClientOperation)
 
 // ClientService is the interface for Client methods
 type ClientService interface {
-	AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityOK, error)
+	AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityCreated, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -38,7 +38,7 @@ AddCity adds a city
 
 Add a City with Acronim
 */
-func (a *Client) AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityOK, error) {
+func (a *Client) AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewAddCityParams()
@@ -63,7 +63,7 @@ func (a *Client) AddCity(params *AddCityParams, opts ...ClientOption) (*AddCityO
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*AddCityOK)
+	success, ok := result.(*AddCityCreated)
 	if ok {
 		return success, nil
 	}

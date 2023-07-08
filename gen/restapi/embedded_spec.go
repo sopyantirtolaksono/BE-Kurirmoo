@@ -134,7 +134,7 @@ func init() {
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Add city success",
             "schema": {
               "type": "object",
@@ -1037,7 +1037,7 @@ func init() {
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Add city success",
             "schema": {
               "type": "object",

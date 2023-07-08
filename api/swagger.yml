@@ -151,7 +151,7 @@ paths:
               code:
                 type: string
       responses:
-        200:
+        201:
           description: 'Add city success'
           schema:
             type: object
