@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"kurirmoo"
+	"time"
 
 	"kurirmoo/gen/restapi/operations/cities"
 	"net/http"
@@ -34,4 +35,29 @@ func (h *handler) Cities(ctx context.Context, rt *kurirmoo.Runtime, params citie
 	}
 
 	return  cityList, err
+}
+
+func (h *handler) AddCity(ctx context.Context, rt *kurirmoo.Runtime, name, code string) (err error){
+
+	if name == "" {
+		err = rt.SetError(http.StatusBadRequest, "City's name is required")
+		return err
+	}
+
+	if code == "" {
+		err = rt.SetError(http.StatusBadRequest, "City's code is required")
+		return err
+	}
+
+	createdAt := time.Now().Unix()
+
+	result := rt.Db.Exec("INSERT INTO cities (city_name, city_code, created_at) VALUES (?, ?, ?)", name, code, createdAt)
+
+	if result.Error != nil {
+		err = rt.SetError(http.StatusNotFound, "Something went wrong. Adding data failed.")
+		return err
+	}
+
+
+	return nil
 }

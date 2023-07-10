@@ -5,6 +5,7 @@ import (
 	"kurirmoo"
 	"kurirmoo/gen/models"
 	"kurirmoo/gen/restapi/operations"
+	"kurirmoo/gen/restapi/operations/add_city"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
@@ -34,6 +35,23 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			ExpiredAt: expiredAt,
 		})
 	})
+
+	api.AddCityAddCityHandler = add_city.AddCityHandlerFunc(func(acp add_city.AddCityParams) middleware.Responder {
+		err := apiHandler.AddCity(context.Background(), rt, *acp.Data.Name, *acp.Data.Code)
+		
+		if err != nil {
+			errResponse := rt.GetError(err)
+			return add_city.NewAddCityBadRequest().WithPayload(&models.Error{
+				Code:    int64(errResponse.Code()),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return add_city.NewAddCityCreated().WithPayload(&add_city.AddCityCreatedBody{
+			Message: "Success to add city",
+		})
+})
+
 
 	api.HealthHealthHandler = health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 		HealthCheck := apiHandler.Health()

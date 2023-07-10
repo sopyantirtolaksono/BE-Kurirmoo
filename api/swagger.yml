@@ -1,6 +1,6 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "1.0.0"
+  version: '1.0.0'
   title: Kurirmoo
 schemes: [http]
 consumes: [application/json, multipart/form-data]
@@ -20,15 +20,15 @@ paths:
   /health:
     get:
       tags: [health]
-      summary: "Health Check"
-      description: "Check if the App is Running"
+      summary: 'Health Check'
+      description: 'Check if the App is Running'
       operationId: health
       security: []
       responses:
         200:
-          description: "Health Check"
+          description: 'Health Check'
           schema:
-            $ref: "#/definitions/Success"
+            $ref: '#/definitions/Success'
         500:
           schema:
             type: string
@@ -39,8 +39,8 @@ paths:
   /api/v1/login:
     post:
       tags: [login]
-      summary: "login"
-      description: "Login User"
+      summary: 'login'
+      description: 'Login User'
       operationId: auth
       security: []
       parameters:
@@ -59,7 +59,7 @@ paths:
                 type: string
       responses:
         200:
-          description: "Login success"
+          description: 'Login success'
           schema:
             type: object
             properties:
@@ -70,19 +70,19 @@ paths:
               expired_at:
                 type: string
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: '#/responses/BadRequest'
         default:
           description: error
           schema:
-            $ref: "#/definitions/Error"
+            $ref: '#/definitions/Error'
 
   ## cities
   /api/v1/cities:
     get:
       tags:
         - cities
-      summary: "return a list of City"
-      description: "Return all list of cities"
+      summary: 'return a list of City'
+      description: 'Return all list of cities'
       operationId: getAllCities
       security: []
       parameters:
@@ -125,18 +125,52 @@ paths:
                   x-go-custom-tag: gorm:"type:int;autoUpdateTime"
 
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: '#/responses/BadRequest'
         default:
           description: error
           schema:
-            $ref: "#/definitions/Error"
+            $ref: '#/definitions/Error'
+    post:
+      tags: [addCity]
+      summary: 'Add a City'
+      description: 'Add a City with Acronim'
+      operationId: addCity
+      security: []
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - code
+            properties:
+              name:
+                type: string
+              code:
+                type: string
+      responses:
+        201:
+          description: 'Add city success'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        400:
+          $ref: '#/responses/BadRequest'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
 
   ## cities by name
   /api/v1/cities/{city_name}:
     get:
       summary: get a city by name
       tags: [cityByName]
-      description: "Return city by name"
+      description: 'Return city by name'
       operationId: getCityByName
       security: []
       parameters:
@@ -158,11 +192,11 @@ paths:
                 type: string
 
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: '#/responses/BadRequest'
         default:
           description: error
           schema:
-            $ref: "#/definitions/Error"
+            $ref: '#/definitions/Error'
 
   ## trucks
   /api/v1/trucks:
@@ -307,8 +341,8 @@ definitions:
 
   Role:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - name
@@ -321,8 +355,8 @@ definitions:
 
   User:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - role_id
@@ -333,7 +367,7 @@ definitions:
             type: number
             format: uint64
           role:
-            $ref: "#/definitions/Role"
+            $ref: '#/definitions/Role'
           phone_number:
             type: string
             x-go-custom-tag: gorm:"type:varchar(40);unique;not null"
@@ -350,7 +384,7 @@ definitions:
 
   Customer:
     allOf:
-      - $ref: "#/definitions/User"
+      - $ref: '#/definitions/User'
       - type: object
         required:
           - name
@@ -390,7 +424,7 @@ definitions:
 
   Driver:
     allOf:
-      - $ref: "#/definitions/User"
+      - $ref: '#/definitions/User'
       - type: object
         required:
           - name
@@ -446,8 +480,8 @@ definitions:
 
   City:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - name
@@ -462,8 +496,8 @@ definitions:
 
   TruckList:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - truck_kind
@@ -498,8 +532,8 @@ definitions:
 
   Route:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - origin_city
@@ -513,12 +547,12 @@ definitions:
             x-go-custom-tag: gorm:"type:integer;not null"
           origin_city:
             allOf:
-              - $ref: "#/definitions/City"
+              - $ref: '#/definitions/City'
             x-go-custom-tag: gorm:"foreigKey:name;type:string;not null"
 
           destination_city:
             allOf:
-              - $ref: "#/definitions/City"
+              - $ref: '#/definitions/City'
             x-go-custom-tag: gorm:"foreigKey:name;type:string;not null"
 
   CityPassed:
@@ -529,17 +563,17 @@ definitions:
     properties:
       route_id:
         allOf:
-          - $ref: "#/definitions/Route"
+          - $ref: '#/definitions/Route'
         x-go-custom-tag: gorm:"foreigKey:id;type:string;not null"
       city:
         allOf:
-          - $ref: "#/definitions/City"
+          - $ref: '#/definitions/City'
         x-go-custom-tag: gorm:"foreigKey:id;type:string;not null"
 
   Otp:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - phone_number
@@ -558,8 +592,8 @@ definitions:
             x-go-custom-tag: gorm:"type:varchar(255);not null;default:'whatsapp'"
   Items:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
-      - $ref: "#/definitions/ModelIdentifier"
+      - $ref: '#/definitions/ModelTrackTime'
+      - $ref: '#/definitions/ModelIdentifier'
       - type: object
         required:
           - item_category
@@ -590,7 +624,7 @@ definitions:
 
   ItemTypes:
     allOf:
-      - $ref: "#/definitions/ModelTrackTime"
+      - $ref: '#/definitions/ModelTrackTime'
       - type: object
         required:
           - slug
@@ -635,7 +669,7 @@ definitions:
         type: integer
       message:
         type: string
-        example: "error"
+        example: 'error'
 
   Success:
     type: object
@@ -663,42 +697,42 @@ responses:
   NotFound:
     description: The specified resource was not found
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   Unauthorized:
     description: The specified resource was not found
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   BadRequest:
     description: Bad Request
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   UnsupportedMediaType:
     description: Unsupported Media Type
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   StatusUnprocessableEntity:
     description: Unprocessable Entity
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   InternalServerError:
     description: Internal server error
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   MethodNotAllowed:
     description: MethodNotAllowed
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
   ServiceUnvailable:
     description: ServiceUnvailable
     schema:
-      $ref: "#/definitions/Error"
+      $ref: '#/definitions/Error'
 
 parameters:
   page_pagination:
@@ -718,11 +752,11 @@ parameters:
     name: order
     in: query
     type: string
-    default: "created_at"
+    default: 'created_at'
   sort_pagination:
     description: default parameter for sort pagination
     name: sort
     in: query
     type: string
     enum: [ASC, DESC]
-    default: "DESC"
+    default: 'DESC'
