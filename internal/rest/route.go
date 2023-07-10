@@ -7,6 +7,7 @@ import (
 	"kurirmoo/gen/restapi/operations"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
+	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
@@ -87,6 +88,47 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 
 		return trucks.NewAddTruckCreated().WithPayload(&models.Success{
 			Message: message,
+		})
+	})
+
+	api.DetailDataMultiplierGetDetailDataMultiplierHandler = detail_data_multiplier.GetDetailDataMultiplierHandlerFunc(func(params detail_data_multiplier.GetDetailDataMultiplierParams) middleware.Responder {
+		route, city_passed, lane, distance, truck_kind, brand, truck_type, volume, capacity, max_price, min_price, price_per_km, id, err := apiHandler.DetailDataMultiplier(context.Background(), rt, *&params.ID)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			errCode := errResponse.Code()
+			if int64(errCode) == 404 {
+				return detail_data_multiplier.NewGetDetailDataMultiplierNotFound().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else if int64(errCode) == 400 {
+				return detail_data_multiplier.NewGetDetailDataMultiplierBadRequest().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else {
+				return detail_data_multiplier.NewGetDetailDataMultiplierInternalServerError().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			}
+		}
+
+		return detail_data_multiplier.NewGetDetailDataMultiplierOK().WithPayload(&detail_data_multiplier.GetDetailDataMultiplierOKBody{
+			Route:      route,
+			CityPassed: city_passed,
+			Lane:       lane,
+			Distance:   distance,
+			TruckKind:  truck_kind,
+			Brand:      brand,
+			TruckType:  truck_type,
+			Volume:     volume,
+			Capacity:   capacity,
+			MaxPrice:   max_price,
+			MinPrice:   min_price,
+			PricePerKm: price_per_km,
+			ID:         id,
 		})
 	})
 }

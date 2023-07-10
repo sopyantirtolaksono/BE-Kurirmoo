@@ -14,6 +14,7 @@ type (
 		CityByNameHandler
 		HealthHandler
 		AddTruckHandler
+		DetailDataMultiplierHandler
 	}
 
 	LoginHandler interface {
@@ -34,6 +35,10 @@ type (
 
 	AddTruckHandler interface {
 		AddTruck(ctx context.Context, rt *kurirmoo.Runtime, truck_kind string, brand string, truck_type string, length int64, width int64, height int64, capacity int64) (message string, err error)
+	}
+
+	DetailDataMultiplierHandler interface {
+		DetailDataMultiplier(ctx context.Context, rt *kurirmoo.Runtime, ID string) (route string, city_passed int64, lane string, distance int64, truck_kind string, brand string, truck_type string, volume int64, capacity int64, max_price int64, min_price int64, price_per_km int64, id int64, err error)
 	}
 )
 

@@ -213,6 +213,62 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ## data multipliers (data pengali)
+  /api/v1/data_multipliers/{id}:
+    get:
+      tags: [detailDataMultiplier]
+      summary: "get detail data multiplier"
+      description: "Return detail data multiplier"
+      operationId: getDetailDataMultiplier
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A JSON of detail data multiplier
+          schema:
+            type: object
+            properties:
+              route:
+                type: string
+              city_passed:
+                type: integer
+              lane:
+                type: string
+              distance:
+                type: integer
+              truck_kind:
+                type: string
+              brand:
+                type: string
+              truck_type:
+                type: string
+              volume:
+                type: integer
+              capacity:
+                type: integer
+              max_price:
+                type: integer
+              min_price:
+                type: integer
+              price_per_km:
+                type: integer
+              id:
+                type: integer
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: "#/responses/InternalServerError"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+
 definitions:
   # Model
   principal:

@@ -151,6 +151,89 @@ func init() {
         }
       }
     },
+    "/api/v1/data_multipliers/{id}": {
+      "get": {
+        "security": [],
+        "description": "Return detail data multiplier",
+        "tags": [
+          "detailDataMultiplier"
+        ],
+        "summary": "get detail data multiplier",
+        "operationId": "getDetailDataMultiplier",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON of detail data multiplier",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer"
+                },
+                "city_passed": {
+                  "type": "integer"
+                },
+                "distance": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "lane": {
+                  "type": "string"
+                },
+                "max_price": {
+                  "type": "integer"
+                },
+                "min_price": {
+                  "type": "integer"
+                },
+                "price_per_km": {
+                  "type": "integer"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "truck_kind": {
+                  "type": "string"
+                },
+                "truck_type": {
+                  "type": "string"
+                },
+                "volume": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/login": {
       "post": {
         "security": [],
@@ -1104,6 +1187,98 @@ func init() {
           },
           "400": {
             "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data_multipliers/{id}": {
+      "get": {
+        "security": [],
+        "description": "Return detail data multiplier",
+        "tags": [
+          "detailDataMultiplier"
+        ],
+        "summary": "get detail data multiplier",
+        "operationId": "getDetailDataMultiplier",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON of detail data multiplier",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer"
+                },
+                "city_passed": {
+                  "type": "integer"
+                },
+                "distance": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "lane": {
+                  "type": "string"
+                },
+                "max_price": {
+                  "type": "integer"
+                },
+                "min_price": {
+                  "type": "integer"
+                },
+                "price_per_km": {
+                  "type": "integer"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "truck_kind": {
+                  "type": "string"
+                },
+                "truck_type": {
+                  "type": "string"
+                },
+                "volume": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
