@@ -165,6 +165,56 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  ## update city
+  /api/v1/cities/{id}:
+    put:
+      summary: update city
+      tags: [updateCity]
+      description: "Update a city"
+      operationId: updateCity
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: name
+          in: formData
+          required: true
+          type: string
+        - name: code
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              code:
+                type: string
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          $ref: "#/responses/NotFound"
+        405:
+          $ref: "#/responses/MethodNotAllowed"
+        500:
+          $ref: "#/responses/InternalServerError"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+
   ## cities by name
   /api/v1/cities/{city_name}:
     get:

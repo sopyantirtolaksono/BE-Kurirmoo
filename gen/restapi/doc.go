@@ -11,6 +11,7 @@
 //	Consumes:
 //	  - application/json
 //	  - multipart/form-data
+//	  - application/x-www-form-urlencoded
 //
 //	Produces:
 //	  - application/json

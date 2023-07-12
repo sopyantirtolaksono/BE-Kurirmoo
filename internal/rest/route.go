@@ -12,6 +12,7 @@ import (
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_city"
 
 	"kurirmoo/internal/handlers"
 
@@ -38,7 +39,7 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 
 	api.AddCityAddCityHandler = add_city.AddCityHandlerFunc(func(acp add_city.AddCityParams) middleware.Responder {
 		err := apiHandler.AddCity(context.Background(), rt, *acp.Data.Name, *acp.Data.Code)
-		
+
 		if err != nil {
 			errResponse := rt.GetError(err)
 			return add_city.NewAddCityBadRequest().WithPayload(&models.Error{
@@ -50,8 +51,7 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 		return add_city.NewAddCityCreated().WithPayload(&add_city.AddCityCreatedBody{
 			Message: "Success to add city",
 		})
-})
-
+	})
 
 	api.HealthHealthHandler = health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 		HealthCheck := apiHandler.Health()
@@ -73,6 +73,43 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 		}
 
 		return cities.NewGetAllCitiesOK().WithPayload(cityList)
+	})
+
+	api.UpdateCityUpdateCityHandler = update_city.UpdateCityHandlerFunc(func(params update_city.UpdateCityParams) middleware.Responder {
+		cityID, cityName, cityCode, err := apiHandler.UpdateCity(context.Background(), rt, *&params.ID, *&params.Name, *&params.Code)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			errCode := errResponse.Code()
+
+			if int64(errCode) == 400 {
+				return update_city.NewUpdateCityBadRequest().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else if int64(errCode) == 404 {
+				return update_city.NewUpdateCityNotFound().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else if int64(errCode) == 405 {
+				return update_city.NewUpdateCityMethodNotAllowed().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else {
+				return update_city.NewUpdateCityInternalServerError().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			}
+		}
+
+		return update_city.NewUpdateCityOK().WithPayload(&update_city.UpdateCityOKBody{
+			ID:   cityID,
+			Name: cityName,
+			Code: cityCode,
+		})
 	})
 
 	api.CityByNameGetCityByNameHandler = city_by_name.GetCityByNameHandlerFunc(func(params city_by_name.GetCityByNameParams) middleware.Responder {

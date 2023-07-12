@@ -26,6 +26,7 @@ import (
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_city"
 )
 
 // NewKurirmooServerAPI creates a new KurirmooServer instance
@@ -48,14 +49,15 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 
 		JSONConsumer:          runtime.JSONConsumer(),
 		MultipartformConsumer: runtime.DiscardConsumer,
+		UrlformConsumer:       runtime.DiscardConsumer,
 
 		JSONProducer: runtime.JSONProducer(),
 
-		TrucksAddTruckHandler: trucks.AddTruckHandlerFunc(func(params trucks.AddTruckParams) middleware.Responder {
-			return middleware.NotImplemented("operation trucks.AddTruck has not yet been implemented")
-		}),
 		AddCityAddCityHandler: add_city.AddCityHandlerFunc(func(params add_city.AddCityParams) middleware.Responder {
 			return middleware.NotImplemented("operation add_city.AddCity has not yet been implemented")
+		}),
+		TrucksAddTruckHandler: trucks.AddTruckHandlerFunc(func(params trucks.AddTruckParams) middleware.Responder {
+			return middleware.NotImplemented("operation trucks.AddTruck has not yet been implemented")
 		}),
 		LoginAuthHandler: login.AuthHandlerFunc(func(params login.AuthParams) middleware.Responder {
 			return middleware.NotImplemented("operation login.Auth has not yet been implemented")
@@ -71,6 +73,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		}),
 		HealthHealthHandler: health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")
+		}),
+		UpdateCityUpdateCityHandler: update_city.UpdateCityHandlerFunc(func(params update_city.UpdateCityParams) middleware.Responder {
+			return middleware.NotImplemented("operation update_city.UpdateCity has not yet been implemented")
 		}),
 	}
 }
@@ -106,15 +111,18 @@ type KurirmooServerAPI struct {
 	// MultipartformConsumer registers a consumer for the following mime types:
 	//   - multipart/form-data
 	MultipartformConsumer runtime.Consumer
+	// UrlformConsumer registers a consumer for the following mime types:
+	//   - application/x-www-form-urlencoded
+	UrlformConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// TrucksAddTruckHandler sets the operation handler for the add truck operation
-	TrucksAddTruckHandler trucks.AddTruckHandler
 	// AddCityAddCityHandler sets the operation handler for the add city operation
 	AddCityAddCityHandler add_city.AddCityHandler
+	// TrucksAddTruckHandler sets the operation handler for the add truck operation
+	TrucksAddTruckHandler trucks.AddTruckHandler
 	// LoginAuthHandler sets the operation handler for the auth operation
 	LoginAuthHandler login.AuthHandler
 	// CitiesGetAllCitiesHandler sets the operation handler for the get all cities operation
@@ -125,6 +133,8 @@ type KurirmooServerAPI struct {
 	DetailDataMultiplierGetDetailDataMultiplierHandler detail_data_multiplier.GetDetailDataMultiplierHandler
 	// HealthHealthHandler sets the operation handler for the health operation
 	HealthHealthHandler health.HealthHandler
+	// UpdateCityUpdateCityHandler sets the operation handler for the update city operation
+	UpdateCityUpdateCityHandler update_city.UpdateCityHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -200,14 +210,19 @@ func (o *KurirmooServerAPI) Validate() error {
 	if o.MultipartformConsumer == nil {
 		unregistered = append(unregistered, "MultipartformConsumer")
 	}
+	if o.UrlformConsumer == nil {
+		unregistered = append(unregistered, "UrlformConsumer")
+	}
+
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
 	}
-	if o.TrucksAddTruckHandler == nil {
-		unregistered = append(unregistered, "trucks.AddTruckHandler")
-	}
+
 	if o.AddCityAddCityHandler == nil {
 		unregistered = append(unregistered, "add_city.AddCityHandler")
+	}
+	if o.TrucksAddTruckHandler == nil {
+		unregistered = append(unregistered, "trucks.AddTruckHandler")
 	}
 	if o.LoginAuthHandler == nil {
 		unregistered = append(unregistered, "login.AuthHandler")
@@ -224,6 +239,10 @@ func (o *KurirmooServerAPI) Validate() error {
 	if o.HealthHealthHandler == nil {
 		unregistered = append(unregistered, "health.HealthHandler")
 	}
+	if o.UpdateCityUpdateCityHandler == nil {
+		unregistered = append(unregistered, "update_city.UpdateCityHandler")
+	}
+
 	if len(unregistered) > 0 {
 		return fmt.Errorf("missing registration: %s", strings.Join(unregistered, ", "))
 	}
@@ -256,6 +275,8 @@ func (o *KurirmooServerAPI) ConsumersFor(mediaTypes []string) map[string]runtime
 			result["application/json"] = o.JSONConsumer
 		case "multipart/form-data":
 			result["multipart/form-data"] = o.MultipartformConsumer
+		case "application/x-www-form-urlencoded":
+			result["application/x-www-form-urlencoded"] = o.UrlformConsumer
 		}
 
 		if c, ok := o.customConsumers[mt]; ok {
@@ -312,11 +333,15 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
-	o.handlers["POST"]["/api/v1/trucks"] = trucks.NewAddTruck(o.context, o.TrucksAddTruckHandler)
+
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/api/v1/cities"] = add_city.NewAddCity(o.context, o.AddCityAddCityHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1/trucks"] = trucks.NewAddTruck(o.context, o.TrucksAddTruckHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -337,6 +362,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/health"] = health.NewHealth(o.context, o.HealthHealthHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/api/v1/cities/{id}"] = update_city.NewUpdateCity(o.context, o.UpdateCityUpdateCityHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
