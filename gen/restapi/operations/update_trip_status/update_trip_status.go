@@ -6,12 +6,9 @@ package update_trip_status
 // Editing this file might prove futile when you re-run the generate command
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // UpdateTripStatusHandlerFunc turns a function with the right signature into a update trip status handler
@@ -58,41 +55,4 @@ func (o *UpdateTripStatus) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
-}
-
-// UpdateTripStatusOKBody update trip status o k body
-//
-// swagger:model UpdateTripStatusOKBody
-type UpdateTripStatusOKBody struct {
-
-	// trip status
-	TripStatus string `json:"trip_status,omitempty"`
-}
-
-// Validate validates this update trip status o k body
-func (o *UpdateTripStatusOKBody) Validate(formats strfmt.Registry) error {
-	return nil
-}
-
-// ContextValidate validates this update trip status o k body based on context it is used
-func (o *UpdateTripStatusOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	return nil
-}
-
-// MarshalBinary interface implementation
-func (o *UpdateTripStatusOKBody) MarshalBinary() ([]byte, error) {
-	if o == nil {
-		return nil, nil
-	}
-	return swag.WriteJSON(o)
-}
-
-// UnmarshalBinary interface implementation
-func (o *UpdateTripStatusOKBody) UnmarshalBinary(b []byte) error {
-	var res UpdateTripStatusOKBody
-	if err := swag.ReadJSON(b, &res); err != nil {
-		return err
-	}
-	*o = res
-	return nil
 }

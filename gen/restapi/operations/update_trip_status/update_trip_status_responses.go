@@ -26,7 +26,7 @@ type UpdateTripStatusOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *UpdateTripStatusOKBody `json:"body,omitempty"`
+	Payload *models.Success `json:"body,omitempty"`
 }
 
 // NewUpdateTripStatusOK creates UpdateTripStatusOK with default headers values
@@ -36,13 +36,13 @@ func NewUpdateTripStatusOK() *UpdateTripStatusOK {
 }
 
 // WithPayload adds the payload to the update trip status o k response
-func (o *UpdateTripStatusOK) WithPayload(payload *UpdateTripStatusOKBody) *UpdateTripStatusOK {
+func (o *UpdateTripStatusOK) WithPayload(payload *models.Success) *UpdateTripStatusOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update trip status o k response
-func (o *UpdateTripStatusOK) SetPayload(payload *UpdateTripStatusOKBody) {
+func (o *UpdateTripStatusOK) SetPayload(payload *models.Success) {
 	o.Payload = payload
 }
 
@@ -95,6 +95,141 @@ func (o *UpdateTripStatusBadRequest) SetPayload(payload *models.Error) {
 func (o *UpdateTripStatusBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// UpdateTripStatusUnauthorizedCode is the HTTP code returned for type UpdateTripStatusUnauthorized
+const UpdateTripStatusUnauthorizedCode int = 401
+
+/*
+UpdateTripStatusUnauthorized The specified resource was not found
+
+swagger:response updateTripStatusUnauthorized
+*/
+type UpdateTripStatusUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateTripStatusUnauthorized creates UpdateTripStatusUnauthorized with default headers values
+func NewUpdateTripStatusUnauthorized() *UpdateTripStatusUnauthorized {
+
+	return &UpdateTripStatusUnauthorized{}
+}
+
+// WithPayload adds the payload to the update trip status unauthorized response
+func (o *UpdateTripStatusUnauthorized) WithPayload(payload *models.Error) *UpdateTripStatusUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update trip status unauthorized response
+func (o *UpdateTripStatusUnauthorized) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateTripStatusUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// UpdateTripStatusNotFoundCode is the HTTP code returned for type UpdateTripStatusNotFound
+const UpdateTripStatusNotFoundCode int = 404
+
+/*
+UpdateTripStatusNotFound The specified resource was not found
+
+swagger:response updateTripStatusNotFound
+*/
+type UpdateTripStatusNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateTripStatusNotFound creates UpdateTripStatusNotFound with default headers values
+func NewUpdateTripStatusNotFound() *UpdateTripStatusNotFound {
+
+	return &UpdateTripStatusNotFound{}
+}
+
+// WithPayload adds the payload to the update trip status not found response
+func (o *UpdateTripStatusNotFound) WithPayload(payload *models.Error) *UpdateTripStatusNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update trip status not found response
+func (o *UpdateTripStatusNotFound) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateTripStatusNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// UpdateTripStatusInternalServerErrorCode is the HTTP code returned for type UpdateTripStatusInternalServerError
+const UpdateTripStatusInternalServerErrorCode int = 500
+
+/*
+UpdateTripStatusInternalServerError Internal server error
+
+swagger:response updateTripStatusInternalServerError
+*/
+type UpdateTripStatusInternalServerError struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateTripStatusInternalServerError creates UpdateTripStatusInternalServerError with default headers values
+func NewUpdateTripStatusInternalServerError() *UpdateTripStatusInternalServerError {
+
+	return &UpdateTripStatusInternalServerError{}
+}
+
+// WithPayload adds the payload to the update trip status internal server error response
+func (o *UpdateTripStatusInternalServerError) WithPayload(payload *models.Error) *UpdateTripStatusInternalServerError {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update trip status internal server error response
+func (o *UpdateTripStatusInternalServerError) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateTripStatusInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(500)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {

@@ -134,16 +134,37 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 	})
 
 	api.UpdateTripStatusUpdateTripStatusHandler = update_trip_status.UpdateTripStatusHandlerFunc(func(params update_trip_status.UpdateTripStatusParams) middleware.Responder {
-		_, err := apiHandler.UpdateTripStatus(context.Background(), rt, *&params.ID)
+		message, err := apiHandler.UpdateTripStatus(context.Background(), rt, *&params.ID)
 
 		if err != nil {
 			errResponse := rt.GetError(err)
-			return trucks.NewAddTruckBadRequest().WithPayload(&models.Error{
-				Code:    int64(errResponse.Code()),
-				Message: errResponse.Error(),
-			})
+			errCode := errResponse.Code()
+
+			if int64(errCode) == 400 {
+				return update_trip_status.NewUpdateTripStatusBadRequest().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else if int64(errCode) == 401 {
+				return update_trip_status.NewUpdateTripStatusUnauthorized().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else if int64(errCode) == 404 {
+				return update_trip_status.NewUpdateTripStatusNotFound().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			} else {
+				return update_trip_status.NewUpdateTripStatusInternalServerError().WithPayload(&models.Error{
+					Code:    int64(errCode),
+					Message: errResponse.Error(),
+				})
+			}
 		}
 
-		return update_trip_status.NewUpdateTripStatusOK()
+		return update_trip_status.NewUpdateTripStatusOK().WithPayload(&models.Success{
+			Message: message,
+		})
 	})
 }
