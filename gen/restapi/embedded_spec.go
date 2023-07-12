@@ -234,6 +234,50 @@ func init() {
         }
       }
     },
+    "/api/v1/drivers/{id}": {
+      "put": {
+        "security": [],
+        "description": "Update trip status for driver mobile",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "updateTripStatus"
+        ],
+        "summary": "update trip status",
+        "operationId": "updateTripStatus",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "trip_status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/login": {
       "post": {
         "security": [],
@@ -1285,6 +1329,53 @@ func init() {
           },
           "default": {
             "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/drivers/{id}": {
+      "put": {
+        "security": [],
+        "description": "Update trip status for driver mobile",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "updateTripStatus"
+        ],
+        "summary": "update trip status",
+        "operationId": "updateTripStatus",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "trip_status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
             }

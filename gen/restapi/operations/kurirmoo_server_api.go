@@ -25,6 +25,7 @@ import (
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_trip_status"
 )
 
 // NewKurirmooServerAPI creates a new KurirmooServer instance
@@ -67,6 +68,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		}),
 		HealthHealthHandler: health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")
+		}),
+		UpdateTripStatusUpdateTripStatusHandler: update_trip_status.UpdateTripStatusHandlerFunc(func(params update_trip_status.UpdateTripStatusParams) middleware.Responder {
+			return middleware.NotImplemented("operation update_trip_status.UpdateTripStatus has not yet been implemented")
 		}),
 	}
 }
@@ -119,6 +123,8 @@ type KurirmooServerAPI struct {
 	DetailDataMultiplierGetDetailDataMultiplierHandler detail_data_multiplier.GetDetailDataMultiplierHandler
 	// HealthHealthHandler sets the operation handler for the health operation
 	HealthHealthHandler health.HealthHandler
+	// UpdateTripStatusUpdateTripStatusHandler sets the operation handler for the update trip status operation
+	UpdateTripStatusUpdateTripStatusHandler update_trip_status.UpdateTripStatusHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -216,6 +222,9 @@ func (o *KurirmooServerAPI) Validate() error {
 	}
 	if o.HealthHealthHandler == nil {
 		unregistered = append(unregistered, "health.HealthHandler")
+	}
+	if o.UpdateTripStatusUpdateTripStatusHandler == nil {
+		unregistered = append(unregistered, "update_trip_status.UpdateTripStatusHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -331,6 +340,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/health"] = health.NewHealth(o.context, o.HealthHealthHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/api/v1/drivers/{id}"] = update_trip_status.NewUpdateTripStatus(o.context, o.UpdateTripStatusUpdateTripStatusHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

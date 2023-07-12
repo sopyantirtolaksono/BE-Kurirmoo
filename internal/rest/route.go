@@ -11,6 +11,7 @@ import (
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_trip_status"
 
 	"kurirmoo/internal/handlers"
 
@@ -130,5 +131,19 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			PricePerKm: price_per_km,
 			ID:         id,
 		})
+	})
+
+	api.UpdateTripStatusUpdateTripStatusHandler = update_trip_status.UpdateTripStatusHandlerFunc(func(params update_trip_status.UpdateTripStatusParams) middleware.Responder {
+		_, err := apiHandler.UpdateTripStatus(context.Background(), rt, *&params.ID)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			return trucks.NewAddTruckBadRequest().WithPayload(&models.Error{
+				Code:    int64(errResponse.Code()),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return update_trip_status.NewUpdateTripStatusOK()
 	})
 }

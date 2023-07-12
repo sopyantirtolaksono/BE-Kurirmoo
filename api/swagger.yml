@@ -269,6 +269,36 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ## update trip status for driver mobile
+  /api/v1/drivers/{id}:
+    put:
+      summary: update trip status
+      tags: [updateTripStatus]
+      description: "Update trip status for driver mobile"
+      operationId: updateTripStatus
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              trip_status:
+                type: string
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      produces:
+        - application/json
+
 definitions:
   # Model
   principal:
