@@ -269,6 +269,46 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ## Get route and city passed list for Mobile
+  /api/v1/routes/{id}:
+    get:
+      tags: [getRouteAndCityPasseds]
+      summary: get route and city passeds
+      description: Return route and city passeds
+      operationId: getRouteAndCityPasseds
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              origin_city:
+                type: string
+              destination_city:
+                type: string
+              city_passeds:
+                type: array
+                items:
+                  type: string
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: "#/responses/InternalServerError"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+      produces:
+        - application/json
+
 definitions:
   # Model
   principal:
@@ -515,7 +555,6 @@ definitions:
             allOf:
               - $ref: "#/definitions/City"
             x-go-custom-tag: gorm:"foreigKey:name;type:string;not null"
-
           destination_city:
             allOf:
               - $ref: "#/definitions/City"
@@ -530,7 +569,7 @@ definitions:
       route_id:
         allOf:
           - $ref: "#/definitions/Route"
-        x-go-custom-tag: gorm:"foreigKey:id;type:string;not null"
+        x-go-custom-tag: gorm:"foreigKey:id;type:integer;not null"
       city:
         allOf:
           - $ref: "#/definitions/City"

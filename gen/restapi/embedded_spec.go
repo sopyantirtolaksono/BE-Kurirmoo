@@ -295,6 +295,65 @@ func init() {
         }
       }
     },
+    "/api/v1/routes/{id}": {
+      "get": {
+        "security": [],
+        "description": "Return route and city passeds",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "getRouteAndCityPasseds"
+        ],
+        "summary": "get route and city passeds",
+        "operationId": "getRouteAndCityPasseds",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "city_passeds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "destination_city": {
+                  "type": "string"
+                },
+                "origin_city": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/trucks": {
       "post": {
         "security": [],
@@ -440,7 +499,7 @@ func init() {
               "$ref": "#/definitions/Route"
             }
           ],
-          "x-go-custom-tag": "gorm:\"foreigKey:id;type:string;not null\""
+          "x-go-custom-tag": "gorm:\"foreigKey:id;type:integer;not null\""
         }
       }
     },
@@ -1356,6 +1415,74 @@ func init() {
         }
       }
     },
+    "/api/v1/routes/{id}": {
+      "get": {
+        "security": [],
+        "description": "Return route and city passeds",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "getRouteAndCityPasseds"
+        ],
+        "summary": "get route and city passeds",
+        "operationId": "getRouteAndCityPasseds",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "city_passeds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "destination_city": {
+                  "type": "string"
+                },
+                "origin_city": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/trucks": {
       "post": {
         "security": [],
@@ -1504,7 +1631,7 @@ func init() {
               "$ref": "#/definitions/Route"
             }
           ],
-          "x-go-custom-tag": "gorm:\"foreigKey:id;type:string;not null\""
+          "x-go-custom-tag": "gorm:\"foreigKey:id;type:integer;not null\""
         }
       }
     },

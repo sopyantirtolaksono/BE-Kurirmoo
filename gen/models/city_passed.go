@@ -28,7 +28,7 @@ type CityPassed struct {
 	// Required: true
 	RouteID struct {
 		Route
-	} `json:"route_id" gorm:"foreigKey:id;type:string;not null"`
+	} `json:"route_id" gorm:"foreigKey:id;type:integer;not null"`
 }
 
 // Validate validates this city passed

@@ -8,6 +8,7 @@ import (
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
+	"kurirmoo/gen/restapi/operations/get_route_and_city_passeds"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
@@ -129,6 +130,26 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			MinPrice:   min_price,
 			PricePerKm: price_per_km,
 			ID:         id,
+		})
+	})
+
+	api.GetRouteAndCityPassedsGetRouteAndCityPassedsHandler = get_route_and_city_passeds.GetRouteAndCityPassedsHandlerFunc(func(params get_route_and_city_passeds.GetRouteAndCityPassedsParams) middleware.Responder {
+		origin_city, destination_city, city_passeds, err := apiHandler.GetRouteAndCityPasseds(context.Background(), rt, *&params.ID)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			errCode := errResponse.Code()
+
+			return get_route_and_city_passeds.NewGetRouteAndCityPassedsBadRequest().WithPayload(&models.Error{
+				Code:    int64(errCode),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return get_route_and_city_passeds.NewGetRouteAndCityPassedsOK().WithPayload(&get_route_and_city_passeds.GetRouteAndCityPassedsOKBody{
+			OriginCity:      origin_city,
+			DestinationCity: destination_city,
+			CityPasseds:     city_passeds,
 		})
 	})
 }

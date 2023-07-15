@@ -22,6 +22,7 @@ import (
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
+	"kurirmoo/gen/restapi/operations/get_route_and_city_passeds"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
@@ -64,6 +65,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		}),
 		DetailDataMultiplierGetDetailDataMultiplierHandler: detail_data_multiplier.GetDetailDataMultiplierHandlerFunc(func(params detail_data_multiplier.GetDetailDataMultiplierParams) middleware.Responder {
 			return middleware.NotImplemented("operation detail_data_multiplier.GetDetailDataMultiplier has not yet been implemented")
+		}),
+		GetRouteAndCityPassedsGetRouteAndCityPassedsHandler: get_route_and_city_passeds.GetRouteAndCityPassedsHandlerFunc(func(params get_route_and_city_passeds.GetRouteAndCityPassedsParams) middleware.Responder {
+			return middleware.NotImplemented("operation get_route_and_city_passeds.GetRouteAndCityPasseds has not yet been implemented")
 		}),
 		HealthHealthHandler: health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")
@@ -117,6 +121,8 @@ type KurirmooServerAPI struct {
 	CityByNameGetCityByNameHandler city_by_name.GetCityByNameHandler
 	// DetailDataMultiplierGetDetailDataMultiplierHandler sets the operation handler for the get detail data multiplier operation
 	DetailDataMultiplierGetDetailDataMultiplierHandler detail_data_multiplier.GetDetailDataMultiplierHandler
+	// GetRouteAndCityPassedsGetRouteAndCityPassedsHandler sets the operation handler for the get route and city passeds operation
+	GetRouteAndCityPassedsGetRouteAndCityPassedsHandler get_route_and_city_passeds.GetRouteAndCityPassedsHandler
 	// HealthHealthHandler sets the operation handler for the health operation
 	HealthHealthHandler health.HealthHandler
 
@@ -213,6 +219,9 @@ func (o *KurirmooServerAPI) Validate() error {
 	}
 	if o.DetailDataMultiplierGetDetailDataMultiplierHandler == nil {
 		unregistered = append(unregistered, "detail_data_multiplier.GetDetailDataMultiplierHandler")
+	}
+	if o.GetRouteAndCityPassedsGetRouteAndCityPassedsHandler == nil {
+		unregistered = append(unregistered, "get_route_and_city_passeds.GetRouteAndCityPassedsHandler")
 	}
 	if o.HealthHealthHandler == nil {
 		unregistered = append(unregistered, "health.HealthHandler")
@@ -327,6 +336,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/api/v1/data_multipliers/{id}"] = detail_data_multiplier.NewGetDetailDataMultiplier(o.context, o.DetailDataMultiplierGetDetailDataMultiplierHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1/routes/{id}"] = get_route_and_city_passeds.NewGetRouteAndCityPasseds(o.context, o.GetRouteAndCityPassedsGetRouteAndCityPassedsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

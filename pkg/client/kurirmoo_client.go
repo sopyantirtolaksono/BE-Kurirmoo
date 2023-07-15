@@ -13,6 +13,7 @@ import (
 	"kurirmoo/pkg/client/cities"
 	"kurirmoo/pkg/client/city_by_name"
 	"kurirmoo/pkg/client/detail_data_multiplier"
+	"kurirmoo/pkg/client/get_route_and_city_passeds"
 	"kurirmoo/pkg/client/health"
 	"kurirmoo/pkg/client/login"
 	"kurirmoo/pkg/client/trucks"
@@ -63,6 +64,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Kurirmoo {
 	cli.Cities = cities.New(transport, formats)
 	cli.CityByName = city_by_name.New(transport, formats)
 	cli.DetailDataMultiplier = detail_data_multiplier.New(transport, formats)
+	cli.GetRouteAndCityPasseds = get_route_and_city_passeds.New(transport, formats)
 	cli.Health = health.New(transport, formats)
 	cli.Login = login.New(transport, formats)
 	cli.Trucks = trucks.New(transport, formats)
@@ -116,6 +118,8 @@ type Kurirmoo struct {
 
 	DetailDataMultiplier detail_data_multiplier.ClientService
 
+	GetRouteAndCityPasseds get_route_and_city_passeds.ClientService
+
 	Health health.ClientService
 
 	Login login.ClientService
@@ -131,6 +135,7 @@ func (c *Kurirmoo) SetTransport(transport runtime.ClientTransport) {
 	c.Cities.SetTransport(transport)
 	c.CityByName.SetTransport(transport)
 	c.DetailDataMultiplier.SetTransport(transport)
+	c.GetRouteAndCityPasseds.SetTransport(transport)
 	c.Health.SetTransport(transport)
 	c.Login.SetTransport(transport)
 	c.Trucks.SetTransport(transport)
