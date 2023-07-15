@@ -12,7 +12,7 @@ build:
 	CGO_ENABLED=0 GOOS=linux go build -v -installsuffix cgo ./cmd/kurirmoo-server
 	
 run:
-	./kurirmoo-server --port=8080 --host=0.0.0.0 --config=./configs/swagger.yml
+	./kurirmoo-server --port=8080 --host=0.0.0.0 --config=./configs/app.yaml
 
 run-local:
 	go run cmd/kurirmoo-server/main.go --port=8080
