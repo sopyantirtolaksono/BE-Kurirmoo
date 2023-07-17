@@ -5,6 +5,7 @@ import (
 	"kurirmoo"
 
 	"kurirmoo/gen/restapi/operations/cities"
+	"kurirmoo/gen/restapi/operations/customers"
 )
 
 type (
@@ -15,6 +16,7 @@ type (
 		HealthHandler
 		AddTruckHandler
 		DetailDataMultiplierHandler
+		CustomersHandler
 	}
 
 	LoginHandler interface {
@@ -39,6 +41,10 @@ type (
 
 	DetailDataMultiplierHandler interface {
 		DetailDataMultiplier(ctx context.Context, rt *kurirmoo.Runtime, ID string) (route string, city_passed int64, lane string, distance int64, truck_kind string, brand string, truck_type string, volume int64, capacity int64, max_price int64, min_price int64, price_per_km int64, id int64, err error)
+	}
+
+	CustomersHandler interface {
+		Customers(ctx context.Context, rt *kurirmoo.Runtime, params customers.GetAllCustomerParams) (customerList []*customers.GetAllCustomerOKBodyItems0, err error)
 	}
 )
 

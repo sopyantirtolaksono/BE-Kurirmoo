@@ -7,6 +7,7 @@ import (
 	"kurirmoo/gen/restapi/operations"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
+	"kurirmoo/gen/restapi/operations/customers"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
@@ -130,5 +131,21 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			PricePerKm: price_per_km,
 			ID:         id,
 		})
+	})
+
+	api.CustomersGetAllCustomerHandler = customers.GetAllCustomerHandlerFunc(func(params customers.GetAllCustomerParams) middleware.Responder {
+		var customerList []*customers.GetAllCustomerOKBodyItems0
+
+		customerList, err := apiHandler.Customers(context.Background(), rt, params)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			return customers.NewGetAllCustomerBadRequest().WithPayload(&models.Error{
+				Code:    int64(errResponse.Code()),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return customers.NewGetAllCustomerOK().WithPayload(customerList)
 	})
 }

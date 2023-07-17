@@ -21,6 +21,7 @@ import (
 
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
+	"kurirmoo/gen/restapi/operations/customers"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
@@ -58,6 +59,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		}),
 		CitiesGetAllCitiesHandler: cities.GetAllCitiesHandlerFunc(func(params cities.GetAllCitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation cities.GetAllCities has not yet been implemented")
+		}),
+		CustomersGetAllCustomerHandler: customers.GetAllCustomerHandlerFunc(func(params customers.GetAllCustomerParams) middleware.Responder {
+			return middleware.NotImplemented("operation customers.GetAllCustomer has not yet been implemented")
 		}),
 		CityByNameGetCityByNameHandler: city_by_name.GetCityByNameHandlerFunc(func(params city_by_name.GetCityByNameParams) middleware.Responder {
 			return middleware.NotImplemented("operation city_by_name.GetCityByName has not yet been implemented")
@@ -113,6 +117,8 @@ type KurirmooServerAPI struct {
 	LoginAuthHandler login.AuthHandler
 	// CitiesGetAllCitiesHandler sets the operation handler for the get all cities operation
 	CitiesGetAllCitiesHandler cities.GetAllCitiesHandler
+	// CustomersGetAllCustomerHandler sets the operation handler for the get all customer operation
+	CustomersGetAllCustomerHandler customers.GetAllCustomerHandler
 	// CityByNameGetCityByNameHandler sets the operation handler for the get city by name operation
 	CityByNameGetCityByNameHandler city_by_name.GetCityByNameHandler
 	// DetailDataMultiplierGetDetailDataMultiplierHandler sets the operation handler for the get detail data multiplier operation
@@ -207,6 +213,9 @@ func (o *KurirmooServerAPI) Validate() error {
 	}
 	if o.CitiesGetAllCitiesHandler == nil {
 		unregistered = append(unregistered, "cities.GetAllCitiesHandler")
+	}
+	if o.CustomersGetAllCustomerHandler == nil {
+		unregistered = append(unregistered, "customers.GetAllCustomerHandler")
 	}
 	if o.CityByNameGetCityByNameHandler == nil {
 		unregistered = append(unregistered, "city_by_name.GetCityByNameHandler")
@@ -319,6 +328,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/api/v1/cities"] = cities.NewGetAllCities(o.context, o.CitiesGetAllCitiesHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1/customers"] = customers.NewGetAllCustomer(o.context, o.CustomersGetAllCustomerHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

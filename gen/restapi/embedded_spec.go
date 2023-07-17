@@ -151,6 +151,86 @@ func init() {
         }
       }
     },
+    "/api/v1/customers": {
+      "get": {
+        "security": [],
+        "description": "Return all list of customer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "customers"
+        ],
+        "summary": "get list of customer",
+        "operationId": "getAllCustomer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "search with name",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "filter for status",
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "filter for type",
+            "name": "type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a json array of customers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "account_status": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "integer",
+                    "format": "date-time",
+                    "x-go-custom-tag": "gorm:\"type:int;autoCreateTime\"",
+                    "x-omitempty": false
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "is_corporate": {
+                    "type": "boolean"
+                  },
+                  "ktp_number": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone_number": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/data_multipliers/{id}": {
       "get": {
         "security": [],
@@ -1200,6 +1280,63 @@ func init() {
         }
       }
     },
+    "/api/v1/customers": {
+      "get": {
+        "security": [],
+        "description": "Return all list of customer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "customers"
+        ],
+        "summary": "get list of customer",
+        "operationId": "getAllCustomer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "search with name",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "filter for status",
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "filter for type",
+            "name": "type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a json array of customers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetAllCustomerOKBodyItems0"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/data_multipliers/{id}": {
       "get": {
         "security": [],
@@ -1726,6 +1863,35 @@ func init() {
           "format": "date-time",
           "x-go-custom-tag": "gorm:\"type:int;autoUpdateTime\"",
           "x-omitempty": false
+        }
+      }
+    },
+    "GetAllCustomerOKBodyItems0": {
+      "type": "object",
+      "properties": {
+        "account_status": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "date-time",
+          "x-go-custom-tag": "gorm:\"type:int;autoCreateTime\"",
+          "x-omitempty": false
+        },
+        "id": {
+          "type": "integer"
+        },
+        "is_corporate": {
+          "type": "boolean"
+        },
+        "ktp_number": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
         }
       }
     },

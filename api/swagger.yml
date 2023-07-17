@@ -269,6 +269,65 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ##  get list customer for cms
+  /api/v1/customers:
+    get:
+      tags:
+        - customers
+      summary: get list of customer
+      description: Return all list of customer
+      operationId: getAllCustomer
+      security: []
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: search with name
+          type: string
+        - name: status
+          in: query
+          required: false
+          description: filter for status
+          type: string
+        - name: type
+          in: query
+          required: false
+          description: filter for type
+          type: string
+      responses:
+        200:
+          description: a json array of customers
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                ktp_number:
+                  type: string
+                is_corporate:
+                  type: boolean
+                phone_number:
+                  type: string
+                account_status:
+                  type: string
+                created_at:
+                  type: integer
+                  format: date-time
+                  x-omitempty: false
+                  x-go-custom-tag: gorm:"type:int;autoCreateTime"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+      produces:
+        - application/json
+
 definitions:
   # Model
   principal:
