@@ -1,1 +1,1 @@
-INSERT INTO "users" (email, phone_number, "password", role_id) VALUES ('andrefajar@refactory.id', '', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 1);
+-- INSERT INTO "users" (email, phone_number, "password", role_id) VALUES ('andrefajar@refactory.id', '', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 1);

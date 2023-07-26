@@ -11,6 +11,7 @@ import (
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_driver"
 
 	"kurirmoo/internal/handlers"
 
@@ -129,6 +130,23 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			MinPrice:   min_price,
 			PricePerKm: price_per_km,
 			ID:         id,
+		})
+	})
+
+	api.UpdateDriverUpdateDriverHandler = update_driver.UpdateDriverHandlerFunc(func(params update_driver.UpdateDriverParams, principal *models.Principal) middleware.Responder {
+		message, err := apiHandler.UpdateDriver(context.Background(), rt, *&params.ID, *params.Data.PhoneNumber, *&params.Data.PhoneNumber2)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			errCode := errResponse.Code()
+			return update_driver.NewUpdateDriverBadRequest().WithPayload(&models.Error{
+				Code:    int64(errCode),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return update_driver.NewUpdateDriverOK().WithPayload(&models.Success{
+			Message: message,
 		})
 	})
 }

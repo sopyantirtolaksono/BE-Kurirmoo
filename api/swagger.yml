@@ -14,6 +14,14 @@ securityDefinitions:
     type: apiKey
     in: header
     name: Authorization
+  hasRole:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://example.com/oauth/authorize
+    tokenUrl: https://example.com/oauth/token
+    scopes:
+      SUPER ADMIN: scope of super admin
+      ADMIN PARTNER: scope of admin partner
 
 paths:
   # health
@@ -268,6 +276,48 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/Error"
+
+  ## update profile driver (phone number)
+  /api/v1/drivers/{id}:
+    patch:
+      summary: update profile driver
+      tags: [updateDriver]
+      description: Update profile driver (phone number)
+      operationId: updateDriver
+      security:
+        - hasRole: ["SUPER ADMIN", "ADMIN PARTNER"]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - phone_number
+            properties:
+              phone_number:
+                type: string
+              phone_number_2:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Success"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+      consumes:
+        - application/json
+      produces:
+        - application/json
 
 definitions:
   # Model

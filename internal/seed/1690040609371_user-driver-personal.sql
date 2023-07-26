@@ -1,0 +1,1 @@
+-- INSERT INTO "users" (email, phone_number, "password", role_id) VALUES ('alta@refactory.id', '089111222333', '12345678', 5);

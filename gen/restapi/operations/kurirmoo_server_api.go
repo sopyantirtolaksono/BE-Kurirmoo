@@ -19,12 +19,14 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"kurirmoo/gen/models"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
 	"kurirmoo/gen/restapi/operations/trucks"
+	"kurirmoo/gen/restapi/operations/update_driver"
 )
 
 // NewKurirmooServerAPI creates a new KurirmooServer instance
@@ -68,6 +70,15 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		HealthHealthHandler: health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")
 		}),
+		UpdateDriverUpdateDriverHandler: update_driver.UpdateDriverHandlerFunc(func(params update_driver.UpdateDriverParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation update_driver.UpdateDriver has not yet been implemented")
+		}),
+
+		HasRoleAuth: func(token string, scopes []string) (*models.Principal, error) {
+			return nil, errors.NotImplemented("oauth2 bearer auth (hasRole) has not yet been implemented")
+		},
+		// default authorizer is authorized meaning no requests are blocked
+		APIAuthorizer: security.Authorized(),
 	}
 }
 
@@ -107,6 +118,13 @@ type KurirmooServerAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// HasRoleAuth registers a function that takes an access token and a collection of required scopes and returns a principal
+	// it performs authentication based on an oauth2 bearer token provided in the request
+	HasRoleAuth func(string, []string) (*models.Principal, error)
+
+	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
+	APIAuthorizer runtime.Authorizer
+
 	// TrucksAddTruckHandler sets the operation handler for the add truck operation
 	TrucksAddTruckHandler trucks.AddTruckHandler
 	// LoginAuthHandler sets the operation handler for the auth operation
@@ -119,6 +137,8 @@ type KurirmooServerAPI struct {
 	DetailDataMultiplierGetDetailDataMultiplierHandler detail_data_multiplier.GetDetailDataMultiplierHandler
 	// HealthHealthHandler sets the operation handler for the health operation
 	HealthHealthHandler health.HealthHandler
+	// UpdateDriverUpdateDriverHandler sets the operation handler for the update driver operation
+	UpdateDriverUpdateDriverHandler update_driver.UpdateDriverHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -199,6 +219,10 @@ func (o *KurirmooServerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.HasRoleAuth == nil {
+		unregistered = append(unregistered, "HasRoleAuth")
+	}
+
 	if o.TrucksAddTruckHandler == nil {
 		unregistered = append(unregistered, "trucks.AddTruckHandler")
 	}
@@ -217,6 +241,9 @@ func (o *KurirmooServerAPI) Validate() error {
 	if o.HealthHealthHandler == nil {
 		unregistered = append(unregistered, "health.HealthHandler")
 	}
+	if o.UpdateDriverUpdateDriverHandler == nil {
+		unregistered = append(unregistered, "update_driver.UpdateDriverHandler")
+	}
 
 	if len(unregistered) > 0 {
 		return fmt.Errorf("missing registration: %s", strings.Join(unregistered, ", "))
@@ -232,12 +259,22 @@ func (o *KurirmooServerAPI) ServeErrorFor(operationID string) func(http.Response
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *KurirmooServerAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
-	return nil
+	result := make(map[string]runtime.Authenticator)
+	for name := range schemes {
+		switch name {
+		case "hasRole":
+			result[name] = o.BearerAuthenticator(name, func(token string, scopes []string) (interface{}, error) {
+				return o.HasRoleAuth(token, scopes)
+			})
+
+		}
+	}
+	return result
 }
 
 // Authorizer returns the registered authorizer
 func (o *KurirmooServerAPI) Authorizer() runtime.Authorizer {
-	return nil
+	return o.APIAuthorizer
 }
 
 // ConsumersFor gets the consumers for the specified media types.
@@ -331,6 +368,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/health"] = health.NewHealth(o.context, o.HealthHealthHandler)
+	if o.handlers["PATCH"] == nil {
+		o.handlers["PATCH"] = make(map[string]http.Handler)
+	}
+	o.handlers["PATCH"]["/api/v1/drivers/{id}"] = update_driver.NewUpdateDriver(o.context, o.UpdateDriverUpdateDriverHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

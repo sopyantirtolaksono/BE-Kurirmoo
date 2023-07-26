@@ -234,6 +234,74 @@ func init() {
         }
       }
     },
+    "/api/v1/drivers/{id}": {
+      "patch": {
+        "security": [
+          {
+            "hasRole": [
+              "SUPER ADMIN",
+              "ADMIN PARTNER"
+            ]
+          }
+        ],
+        "description": "Update profile driver (phone number)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "updateDriver"
+        ],
+        "summary": "update profile driver",
+        "operationId": "updateDriver",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "phone_number"
+              ],
+              "properties": {
+                "phone_number": {
+                  "type": "string"
+                },
+                "phone_number_2": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/api/v1/login": {
       "post": {
         "security": [],
@@ -1071,6 +1139,16 @@ func init() {
     }
   },
   "securityDefinitions": {
+    "hasRole": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://example.com/oauth/authorize",
+      "tokenUrl": "https://example.com/oauth/token",
+      "scopes": {
+        "ADMIN PARTNER": "scope of admin partner",
+        "SUPER ADMIN": "scope of super admin"
+      }
+    },
     "hasRoleSuperAdmin": {
       "type": "apiKey",
       "name": "Authorization",
@@ -1285,6 +1363,77 @@ func init() {
           },
           "default": {
             "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/drivers/{id}": {
+      "patch": {
+        "security": [
+          {
+            "hasRole": [
+              "ADMIN PARTNER",
+              "SUPER ADMIN"
+            ]
+          }
+        ],
+        "description": "Update profile driver (phone number)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "updateDriver"
+        ],
+        "summary": "update profile driver",
+        "operationId": "updateDriver",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "phone_number"
+              ],
+              "properties": {
+                "phone_number": {
+                  "type": "string"
+                },
+                "phone_number_2": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -2161,6 +2310,16 @@ func init() {
     }
   },
   "securityDefinitions": {
+    "hasRole": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://example.com/oauth/authorize",
+      "tokenUrl": "https://example.com/oauth/token",
+      "scopes": {
+        "ADMIN PARTNER": "scope of admin partner",
+        "SUPER ADMIN": "scope of super admin"
+      }
+    },
     "hasRoleSuperAdmin": {
       "type": "apiKey",
       "name": "Authorization",
