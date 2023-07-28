@@ -7,6 +7,7 @@ import (
 	"kurirmoo/gen/restapi/operations"
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
+	"kurirmoo/gen/restapi/operations/delete_truck"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
@@ -129,6 +130,23 @@ func Route(rt *kurirmoo.Runtime, api *operations.KurirmooServerAPI, apiHandler h
 			MinPrice:   min_price,
 			PricePerKm: price_per_km,
 			ID:         id,
+		})
+	})
+
+	api.DeleteTruckDeleteTruckHandler = delete_truck.DeleteTruckHandlerFunc(func(params delete_truck.DeleteTruckParams) middleware.Responder {
+		message, err := apiHandler.DeleteTruck(context.Background(), rt, *&params.ID)
+
+		if err != nil {
+			errResponse := rt.GetError(err)
+			errCode := errResponse.Code()
+			return delete_truck.NewDeleteTruckBadRequest().WithPayload(&models.Error{
+				Code:    int64(errCode),
+				Message: errResponse.Error(),
+			})
+		}
+
+		return delete_truck.NewDeleteTruckOK().WithPayload(&models.Success{
+			Message: message,
 		})
 	})
 }

@@ -30,6 +30,9 @@ type TruckList struct {
 	// Required: true
 	Capacity *int64 `json:"capacity" gorm:"type:integer;not null"`
 
+	// deleted at
+	DeletedAt int64 `json:"deleted_at" gorm:"type:int;autoDeleteTime"`
+
 	// height
 	// Required: true
 	Height *int64 `json:"height" gorm:"type:integer;not null"`
@@ -73,6 +76,8 @@ func (m *TruckList) UnmarshalJSON(raw []byte) error {
 
 		Capacity *int64 `json:"capacity"`
 
+		DeletedAt int64 `json:"deleted_at"`
+
 		Height *int64 `json:"height"`
 
 		Length *int64 `json:"length"`
@@ -90,6 +95,8 @@ func (m *TruckList) UnmarshalJSON(raw []byte) error {
 	m.Brand = dataAO2.Brand
 
 	m.Capacity = dataAO2.Capacity
+
+	m.DeletedAt = dataAO2.DeletedAt
 
 	m.Height = dataAO2.Height
 
@@ -124,6 +131,8 @@ func (m TruckList) MarshalJSON() ([]byte, error) {
 
 		Capacity *int64 `json:"capacity"`
 
+		DeletedAt int64 `json:"deleted_at"`
+
 		Height *int64 `json:"height"`
 
 		Length *int64 `json:"length"`
@@ -138,6 +147,8 @@ func (m TruckList) MarshalJSON() ([]byte, error) {
 	dataAO2.Brand = m.Brand
 
 	dataAO2.Capacity = m.Capacity
+
+	dataAO2.DeletedAt = m.DeletedAt
 
 	dataAO2.Height = m.Height
 

@@ -21,6 +21,7 @@ import (
 
 	"kurirmoo/gen/restapi/operations/cities"
 	"kurirmoo/gen/restapi/operations/city_by_name"
+	"kurirmoo/gen/restapi/operations/delete_truck"
 	"kurirmoo/gen/restapi/operations/detail_data_multiplier"
 	"kurirmoo/gen/restapi/operations/health"
 	"kurirmoo/gen/restapi/operations/login"
@@ -55,6 +56,9 @@ func NewKurirmooServerAPI(spec *loads.Document) *KurirmooServerAPI {
 		}),
 		LoginAuthHandler: login.AuthHandlerFunc(func(params login.AuthParams) middleware.Responder {
 			return middleware.NotImplemented("operation login.Auth has not yet been implemented")
+		}),
+		DeleteTruckDeleteTruckHandler: delete_truck.DeleteTruckHandlerFunc(func(params delete_truck.DeleteTruckParams) middleware.Responder {
+			return middleware.NotImplemented("operation delete_truck.DeleteTruck has not yet been implemented")
 		}),
 		CitiesGetAllCitiesHandler: cities.GetAllCitiesHandlerFunc(func(params cities.GetAllCitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation cities.GetAllCities has not yet been implemented")
@@ -111,6 +115,8 @@ type KurirmooServerAPI struct {
 	TrucksAddTruckHandler trucks.AddTruckHandler
 	// LoginAuthHandler sets the operation handler for the auth operation
 	LoginAuthHandler login.AuthHandler
+	// DeleteTruckDeleteTruckHandler sets the operation handler for the delete truck operation
+	DeleteTruckDeleteTruckHandler delete_truck.DeleteTruckHandler
 	// CitiesGetAllCitiesHandler sets the operation handler for the get all cities operation
 	CitiesGetAllCitiesHandler cities.GetAllCitiesHandler
 	// CityByNameGetCityByNameHandler sets the operation handler for the get city by name operation
@@ -204,6 +210,9 @@ func (o *KurirmooServerAPI) Validate() error {
 	}
 	if o.LoginAuthHandler == nil {
 		unregistered = append(unregistered, "login.AuthHandler")
+	}
+	if o.DeleteTruckDeleteTruckHandler == nil {
+		unregistered = append(unregistered, "delete_truck.DeleteTruckHandler")
 	}
 	if o.CitiesGetAllCitiesHandler == nil {
 		unregistered = append(unregistered, "cities.GetAllCitiesHandler")
@@ -315,6 +324,10 @@ func (o *KurirmooServerAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/api/v1/login"] = login.NewAuth(o.context, o.LoginAuthHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/api/v1/trucks/{id}"] = delete_truck.NewDeleteTruck(o.context, o.DeleteTruckDeleteTruckHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

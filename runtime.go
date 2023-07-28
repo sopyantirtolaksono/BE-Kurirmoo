@@ -85,6 +85,7 @@ func (r *Runtime) RunMigration() {
 		&models.Items{},
 		&models.ItemTypes{},
 		&models.DataMultiplier{},
+		&models.DriverTruck{},
 	)
 }
 

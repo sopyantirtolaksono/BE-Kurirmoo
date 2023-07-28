@@ -213,6 +213,37 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  ## delete truck
+  /api/v1/trucks/{id}:
+    delete:
+      summary: delete truck
+      tags: [deleteTruck]
+      description: Delete truck
+      operationId: deleteTruck
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Success"
+        204:
+          description: Deleted
+          schema:
+            $ref: "#/definitions/Success"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+      produces:
+        - application/json
+
   ## data multipliers (data pengali)
   /api/v1/data_multipliers/{id}:
     get:
@@ -444,6 +475,22 @@ definitions:
             type: string
             x-go-custom-tag: gorm:"type:varchar(255);not null"
 
+  DriverTruck:
+    allOf:
+      - type: object
+        properties:
+          driver_id:
+            type: integer
+            format: uint64
+          truck_id:
+            type: integer
+            format: uint64
+          created_at:
+            type: integer
+            format: date-time
+            x-omitempty: false
+            x-go-custom-tag: gorm:"type:int;autoCreateTime"
+
   City:
     allOf:
       - $ref: "#/definitions/ModelTrackTime"
@@ -495,6 +542,11 @@ definitions:
           capacity:
             type: integer
             x-go-custom-tag: gorm:"type:integer;not null"
+          deleted_at:
+            type: integer
+            format: date-time
+            x-omitempty: false
+            x-go-custom-tag: gorm:"type:int;autoDeleteTime"
 
   Route:
     allOf:

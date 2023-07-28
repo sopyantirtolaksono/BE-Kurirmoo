@@ -365,6 +365,51 @@ func init() {
         }
       }
     },
+    "/api/v1/trucks/{id}": {
+      "delete": {
+        "security": [],
+        "description": "Delete truck",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "deleteTruck"
+        ],
+        "summary": "delete truck",
+        "operationId": "deleteTruck",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "204": {
+            "description": "Deleted",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "security": [],
@@ -622,6 +667,29 @@ func init() {
             "vehicle_plate": {
               "type": "string",
               "x-go-custom-tag": "gorm:\"type:varchar(10);not null\""
+            }
+          }
+        }
+      ]
+    },
+    "DriverTruck": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "created_at": {
+              "type": "integer",
+              "format": "date-time",
+              "x-go-custom-tag": "gorm:\"type:int;autoCreateTime\"",
+              "x-omitempty": false
+            },
+            "driver_id": {
+              "type": "integer",
+              "format": "uint64"
+            },
+            "truck_id": {
+              "type": "integer",
+              "format": "uint64"
             }
           }
         }
@@ -898,6 +966,12 @@ func init() {
             "capacity": {
               "type": "integer",
               "x-go-custom-tag": "gorm:\"type:integer;not null\""
+            },
+            "deleted_at": {
+              "type": "integer",
+              "format": "date-time",
+              "x-go-custom-tag": "gorm:\"type:int;autoDeleteTime\"",
+              "x-omitempty": false
             },
             "height": {
               "type": "integer",
@@ -1429,6 +1503,54 @@ func init() {
         }
       }
     },
+    "/api/v1/trucks/{id}": {
+      "delete": {
+        "security": [],
+        "description": "Delete truck",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "deleteTruck"
+        ],
+        "summary": "delete truck",
+        "operationId": "deleteTruck",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "204": {
+            "description": "Deleted",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "security": [],
@@ -1686,6 +1808,29 @@ func init() {
             "vehicle_plate": {
               "type": "string",
               "x-go-custom-tag": "gorm:\"type:varchar(10);not null\""
+            }
+          }
+        }
+      ]
+    },
+    "DriverTruck": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "created_at": {
+              "type": "integer",
+              "format": "date-time",
+              "x-go-custom-tag": "gorm:\"type:int;autoCreateTime\"",
+              "x-omitempty": false
+            },
+            "driver_id": {
+              "type": "integer",
+              "format": "uint64"
+            },
+            "truck_id": {
+              "type": "integer",
+              "format": "uint64"
             }
           }
         }
@@ -1988,6 +2133,12 @@ func init() {
             "capacity": {
               "type": "integer",
               "x-go-custom-tag": "gorm:\"type:integer;not null\""
+            },
+            "deleted_at": {
+              "type": "integer",
+              "format": "date-time",
+              "x-go-custom-tag": "gorm:\"type:int;autoDeleteTime\"",
+              "x-omitempty": false
             },
             "height": {
               "type": "integer",
